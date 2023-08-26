@@ -1,0 +1,19 @@
+services:
+  dp:
+    image: postgres
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ahmedraslan
+      POSTGRES_PASSWORD: admin
+    volumes:
+      - dp:/var/lib/postgresql/data
+    networks:
+      dp:
+
+volumes:
+  dp:
+
+networks:
+  dp:
