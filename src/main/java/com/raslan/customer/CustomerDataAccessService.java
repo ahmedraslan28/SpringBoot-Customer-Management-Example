@@ -2,7 +2,6 @@ package com.raslan.customer;
 
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,5 +23,15 @@ public class CustomerDataAccessService implements CustomerDAO {
     @Override
     public Optional<Customer> getCustomer(Integer customerId) {
         return customerRepository.findById(customerId);
+    }
+
+    @Override
+    public void createCustomer(Customer customer) {
+        customerRepository.save(customer);
+    }
+
+    @Override
+    public boolean existCustomerWithEmail(String email) {
+        return customerRepository.existsByEmail(email) ;
     }
 }

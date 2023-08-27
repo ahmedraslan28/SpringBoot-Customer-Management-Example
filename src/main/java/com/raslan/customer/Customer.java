@@ -1,7 +1,6 @@
 package com.raslan.customer;
 
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 
 import java.util.Objects;

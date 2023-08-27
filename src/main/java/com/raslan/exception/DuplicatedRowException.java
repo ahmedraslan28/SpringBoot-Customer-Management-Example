@@ -3,9 +3,9 @@ package com.raslan.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(value = HttpStatus.NOT_FOUND)
-public class ResourceNotFound extends RuntimeException {
-    public ResourceNotFound(String message) {
+@ResponseStatus(HttpStatus.CONFLICT)
+public class DuplicatedRowException extends RuntimeException {
+    public DuplicatedRowException(String message){
         super(message);
     }
 }
