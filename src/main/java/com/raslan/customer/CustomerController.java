@@ -1,7 +1,5 @@
 package com.raslan.customer;
 
-
-import org.jetbrains.annotations.NotNull;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,7 +25,19 @@ public class CustomerController {
     }
 
     @PostMapping
-    public Customer CreateCustomer(@RequestBody Customer customer){
+    public Customer CreateCustomer(@RequestBody Customer customer) {
         return customerService.createCustomer(customer.getName(), customer.getAge(), customer.getEmail());
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteCustomer(@PathVariable("id") Integer id) {
+        customerService.deleteCustomer(id);
+    }
+
+    @PutMapping("/{id}")
+    public Customer updateCustomer(@PathVariable("id") Integer id,
+                                   @RequestBody Customer customerToUpdate) {
+
+        return customerService.updateCustomer(id, customerToUpdate) ;
     }
 }

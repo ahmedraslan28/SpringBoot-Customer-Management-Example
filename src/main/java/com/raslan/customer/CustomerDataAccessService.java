@@ -31,7 +31,24 @@ public class CustomerDataAccessService implements CustomerDAO {
     }
 
     @Override
+    public void deleteCustomer(Integer id) {
+        customerRepository.deleteById(id);
+    }
+
+    @Override
+    public void updateCustomer(Customer customer) {
+        customerRepository.save(customer);
+    }
+
+    @Override
     public boolean existCustomerWithEmail(String email) {
         return customerRepository.existsByEmail(email) ;
     }
+
+    @Override
+    public boolean existCustomerWithId(Integer id) {
+        return customerRepository.existsById(id) ;
+    }
+
+
 }
