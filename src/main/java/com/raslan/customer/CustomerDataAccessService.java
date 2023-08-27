@@ -7,25 +7,22 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class CustomerDataAccessService implements CustomerDAO{
+public class CustomerDataAccessService implements CustomerDAO {
 
-    private static final List<Customer> customers ;
+    private final CustomerRepository customerRepository;
 
-    static {
-        customers = new ArrayList<>() ;
-        Customer ahmed = new Customer(1, "ahmed", "23", "ahmedraslan28@gmail.com");
-        Customer rana = new Customer(2, "rana", "20", "ranaraslan28@gmail.com");
-        customers.add(ahmed); 
-        customers.add(rana);
+
+    public CustomerDataAccessService(CustomerRepository customerRepository) {
+        this.customerRepository = customerRepository;
     }
+
     @Override
     public List<Customer> getCustomers() {
-        return customers ;
+        return customerRepository.findAll();
     }
 
     @Override
     public Optional<Customer> getCustomer(Integer customerId) {
-        return customers.stream()
-                .filter(customer -> customer.getId().equals(customerId)).findFirst();
+        return customerRepository.findById(customerId);
     }
 }

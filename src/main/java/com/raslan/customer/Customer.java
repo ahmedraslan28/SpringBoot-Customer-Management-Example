@@ -7,16 +7,9 @@ import jakarta.persistence.*;
 import java.util.Objects;
 
 @Entity
-class Customer {
+public class Customer {
     @Id
-    @SequenceGenerator(
-            name = "customer_id_sequence",
-            sequenceName = "customer_id_sequence"
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "customer_id_sequence"
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(nullable = false)
@@ -48,6 +41,12 @@ class Customer {
 
     public String getName() {
         return name;
+    }
+
+    public Customer(String name, String age, String email) {
+        this.name = name;
+        this.age = age;
+        this.email = email;
     }
 
     public void setName(String name) {
