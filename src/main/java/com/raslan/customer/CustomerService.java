@@ -3,6 +3,7 @@ package com.raslan.customer;
 import com.raslan.exception.DuplicatedRowException;
 import com.raslan.exception.RequestValidationException;
 import com.raslan.exception.ResourceNotFoundException;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.List;
 public class CustomerService {
     private final CustomerDAO customerDAO;
 
-    CustomerService(CustomerDAO customerDAO) {
+    CustomerService(@Qualifier("jdbc") CustomerDAO customerDAO) {
         this.customerDAO = customerDAO;
     }
 
