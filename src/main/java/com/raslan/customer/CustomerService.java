@@ -3,7 +3,6 @@ package com.raslan.customer;
 import com.raslan.exception.DuplicatedRowException;
 import com.raslan.exception.RequestValidationException;
 import com.raslan.exception.ResourceNotFoundException;
-import org.springframework.stereotype.Indexed;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,7 +26,7 @@ public class CustomerService {
                 );
     }
 
-    public Customer createCustomer(String name, String age, String email) {
+    public Customer createCustomer(String name, Integer age, String email) {
         Customer customer = new Customer(name, age, email);
         if (customerDAO.existCustomerWithEmail(email)) {
             throw new DuplicatedRowException("the email already exists!!");

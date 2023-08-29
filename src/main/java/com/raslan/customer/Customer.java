@@ -6,16 +6,25 @@ import jakarta.persistence.*;
 import java.util.Objects;
 
 @Entity
+@Table(name="customer")
 public class Customer {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(
+            name = "customer_id_seq",
+            sequenceName = "customer_id_seq",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "customer_id_seq"
+    )
     private Integer id;
 
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)
-    private String age;
-    @Column(nullable = false)
+    private Integer age;
+    @Column(nullable = false, unique = true)
     private String email;
 
 
@@ -23,7 +32,7 @@ public class Customer {
     }
 
 
-    public Customer(Integer id, String name, String age, String email) {
+    public Customer(Integer id, String name, Integer age, String email) {
         this.id = id;
         this.name = name;
         this.age = age;
@@ -42,7 +51,7 @@ public class Customer {
         return name;
     }
 
-    public Customer(String name, String age, String email) {
+    public Customer(String name, Integer age, String email) {
         this.name = name;
         this.age = age;
         this.email = email;
@@ -52,11 +61,11 @@ public class Customer {
         this.name = name;
     }
 
-    public String getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(String age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 
