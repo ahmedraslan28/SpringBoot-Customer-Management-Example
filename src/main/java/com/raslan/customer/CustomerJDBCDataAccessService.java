@@ -32,7 +32,10 @@ public class CustomerJDBCDataAccessService implements CustomerDAO {
 
     @Override
     public Optional<Customer> getCustomer(Integer customerId) {
-        return customerRepository.findById(customerId);
+        var sql = """
+                    select * from customer where id = ?
+                """;
+        return jdbcTemplate.query(sql, customerRowMapper, customerId).stream().findFirst();
     }
 
     @Override
