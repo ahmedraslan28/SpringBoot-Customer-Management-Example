@@ -90,12 +90,20 @@ public class CustomerJDBCDataAccessService implements CustomerDAO {
 
     @Override
     public boolean existCustomerWithEmail(String email) {
-        return customerRepository.existsByEmail(email);
+        String sql = """
+                    select count(id) from customer where email = ?
+                """;
+        Integer found = jdbcTemplate.queryForObject(sql, Integer.class, email)  ;
+        return found != null && found > 0 ;
     }
 
     @Override
     public boolean existCustomerWithId(Integer id) {
-        return customerRepository.existsById(id);
+        String sql = """
+                    select count(id) from customer where id = ?
+                """;
+        Integer found = jdbcTemplate.queryForObject(sql, Integer.class, id)  ;
+        return found != null && found > 0 ;
     }
 
 
