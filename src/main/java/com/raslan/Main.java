@@ -1,7 +1,6 @@
 package com.raslan;
 
 import com.github.javafaker.Faker;
-import com.github.javafaker.Name;
 import com.raslan.customer.Customer;
 import com.raslan.customer.CustomerRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -10,7 +9,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
-import java.util.List;
 import java.util.Random;
 
 @SpringBootApplication
@@ -27,7 +25,7 @@ public class Main {
             Random random = new Random();
             Customer customer = new Customer(
                     firstName + " " + lastName,
-                     random.nextInt(16, 99),
+                    random.nextInt(16, 99),
                     firstName + "_" + lastName + "@raslan.com");
             customerRepository.save(customer);
         };

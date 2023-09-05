@@ -1,5 +1,6 @@
 package com.raslan.customer;
 
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -9,15 +10,12 @@ import java.util.Optional;
 @Repository("jdbc")
 public class CustomerJDBCDataAccessService implements CustomerDAO {
 
-    private final CustomerRepository customerRepository;
-
     private final CustomerRowMapper customerRowMapper;
 
     private final JdbcTemplate jdbcTemplate;
 
 
     public CustomerJDBCDataAccessService(CustomerRepository customerRepository, CustomerRowMapper customerRowMapper, JdbcTemplate jdbcTemplate) {
-        this.customerRepository = customerRepository;
         this.customerRowMapper = customerRowMapper;
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -27,7 +25,7 @@ public class CustomerJDBCDataAccessService implements CustomerDAO {
         var sql = """
                     select * from customer
                 """;
-        return jdbcTemplate.query(sql, customerRowMapper);
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Customer.class));
     }
 
     @Override
@@ -35,7 +33,7 @@ public class CustomerJDBCDataAccessService implements CustomerDAO {
         var sql = """
                     select * from customer where id = ?
                 """;
-        return jdbcTemplate.query(sql, customerRowMapper, customerId).stream().findFirst();
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Customer.class), customerId).stream().findFirst();
     }
 
     @Override
@@ -54,7 +52,7 @@ public class CustomerJDBCDataAccessService implements CustomerDAO {
         var sql = """
                     delete from customer where id = ?
                 """;
-        jdbcTemplate.update(sql, id) ;
+        jdbcTemplate.update(sql, id);
     }
 
     @Override
@@ -93,8 +91,8 @@ public class CustomerJDBCDataAccessService implements CustomerDAO {
         String sql = """
                     select count(id) from customer where email = ?
                 """;
-        Integer found = jdbcTemplate.queryForObject(sql, Integer.class, email)  ;
-        return found != null && found > 0 ;
+        Integer found = jdbcTemplate.queryForObject(sql, Integer.class, email);
+        return found != null && found > 0;
     }
 
     @Override
@@ -102,8 +100,8 @@ public class CustomerJDBCDataAccessService implements CustomerDAO {
         String sql = """
                     select count(id) from customer where id = ?
                 """;
-        Integer found = jdbcTemplate.queryForObject(sql, Integer.class, id)  ;
-        return found != null && found > 0 ;
+        Integer found = jdbcTemplate.queryForObject(sql, Integer.class, id);
+        return found != null && found > 0;
     }
 
 
