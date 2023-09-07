@@ -9,14 +9,10 @@ import java.util.Optional;
 
 @Repository("jdbc")
 public class CustomerJDBCDataAccessService implements CustomerDAO {
-
-    private final CustomerRowMapper customerRowMapper;
-
     private final JdbcTemplate jdbcTemplate;
 
 
-    public CustomerJDBCDataAccessService(CustomerRepository customerRepository, CustomerRowMapper customerRowMapper, JdbcTemplate jdbcTemplate) {
-        this.customerRowMapper = customerRowMapper;
+    public CustomerJDBCDataAccessService(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
@@ -44,6 +40,7 @@ public class CustomerJDBCDataAccessService implements CustomerDAO {
 
         jdbcTemplate.update(sql, customer.getName(),
                 customer.getEmail(), customer.getAge());
+
 
     }
 
