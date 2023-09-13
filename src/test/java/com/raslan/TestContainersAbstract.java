@@ -33,21 +33,21 @@ public abstract class TestContainersAbstract {
                     .withUsername("ahmedraslan")
                     .withPassword("admin");
 
-//    @DynamicPropertySource
-//    private static void registerDataSourceProperty(DynamicPropertyRegistry registry) {
-//        registry.add(
-//                "spring.datasource.url",
-//                postgreSQLContainer::getJdbcUrl
-//        );
-//        registry.add(
-//                "spring.datasource.username",
-//                postgreSQLContainer::getUsername
-//        );
-//        registry.add(
-//                "spring.datasource.password",
-//                postgreSQLContainer::getPassword
-//        );
-//    }
+    @DynamicPropertySource
+    private static void registerDataSourceProperty(DynamicPropertyRegistry registry) {
+        registry.add(
+                "spring.datasource.url",
+                postgreSQLContainer::getJdbcUrl
+        );
+        registry.add(
+                "spring.datasource.username",
+                postgreSQLContainer::getUsername
+        );
+        registry.add(
+                "spring.datasource.password",
+                postgreSQLContainer::getPassword
+        );
+    }
 
     private static DataSource getDataSource() {
         return DataSourceBuilder.create()
