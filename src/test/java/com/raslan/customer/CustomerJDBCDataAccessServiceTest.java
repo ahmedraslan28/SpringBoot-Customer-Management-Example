@@ -1,15 +1,14 @@
 package com.raslan.customer;
 
 import com.raslan.TestContainersAbstract;
+import org.apache.catalina.util.CustomObjectInputStream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class CustomerJDBCDataAccessServiceTest extends TestContainersAbstract {
     private CustomerJDBCDataAccessService underTest;
@@ -32,7 +31,6 @@ class CustomerJDBCDataAccessServiceTest extends TestContainersAbstract {
         underTest.createCustomer(customer);
 
         List<Customer> customers = underTest.getCustomers();
-        System.out.println(customers);
 
         assertThat(customers).isNotEmpty();
     }
@@ -137,6 +135,48 @@ class CustomerJDBCDataAccessServiceTest extends TestContainersAbstract {
 
 
         var newName = "name updated";
+        var newAge = 30;
+        var newEmail = faker.internet().emailAddress();
+        Customer updated = new Customer();
+        updated.setId(id);
+        updated.setName(newName);
+        updated.setAge(newAge);
+        updated.setEmail(newEmail);
+
+
+        underTest.updateCustomer(updated);
+
+        var actual = underTest.getCustomer(id);
+
+        assertThat(actual).isPresent().hasValueSatisfying(c -> {
+            assertThat(c.getId()).isEqualTo(id);
+            assertThat(c.getName()).isEqualTo(newName);
+            assertThat(c.getAge()).isEqualTo(newAge);
+            assertThat(c.getEmail()).isEqualTo(newEmail);
+        });
+
+
+    }
+
+    @Test
+    void updateCustomerName() {
+        Customer customer = new Customer(
+                faker.name().fullName(),
+                25,
+                faker.internet().emailAddress()
+        );
+
+        underTest.createCustomer(customer);
+
+        int id = underTest.getCustomers()
+                .stream()
+                .filter(c -> c.getEmail().equals(customer.getEmail()))
+                .map(Customer::getId)
+                .findFirst()
+                .orElseThrow();
+
+
+        var newName = "name updated";
 
         Customer updated = new Customer();
         updated.setId(id);
@@ -157,7 +197,113 @@ class CustomerJDBCDataAccessServiceTest extends TestContainersAbstract {
     }
 
     @Test
-    void existCustomerWithEmail() {
+    void updateCustomerEmail() {
+        Customer customer = new Customer(
+                faker.name().fullName(),
+                25,
+                faker.internet().emailAddress()
+        );
+
+        underTest.createCustomer(customer);
+
+        int id = underTest.getCustomers()
+                .stream()
+                .filter(c -> c.getEmail().equals(customer.getEmail()))
+                .map(Customer::getId)
+                .findFirst()
+                .orElseThrow();
+
+
+        var newEmail = faker.internet().emailAddress();
+
+        Customer updated = new Customer();
+        updated.setId(id);
+        updated.setEmail(newEmail);
+
+        underTest.updateCustomer(updated);
+
+        var actual = underTest.getCustomer(id);
+
+        assertThat(actual).isPresent().hasValueSatisfying(c -> {
+            assertThat(c.getId()).isEqualTo(id);
+            assertThat(c.getName()).isEqualTo(customer.getName());
+            assertThat(c.getAge()).isEqualTo(customer.getAge());
+            assertThat(c.getEmail()).isEqualTo(newEmail);
+        });
+    }
+
+    @Test
+    void WillNotUpdateWhenNoThingChanged() {
+        Customer customer = new Customer(
+                faker.name().fullName(),
+                25,
+                faker.internet().emailAddress()
+        );
+
+        underTest.createCustomer(customer);
+
+        int id = underTest
+                .getCustomers()
+                .stream()
+                .filter(c -> c.getEmail().equals(customer.getEmail()))
+                .map(Customer::getId)
+                .findFirst()
+                .orElseThrow();
+
+        Customer updated = new Customer();
+        updated.setId(id);
+        underTest.updateCustomer(updated);
+
+        Optional<Customer> actual = underTest.getCustomer(id);
+
+        assertThat(actual).isPresent().hasValueSatisfying(c -> {
+            assertThat(c.getId()).isEqualTo(id);
+            assertThat(c.getAge()).isEqualTo(customer.getAge());
+            assertThat(c.getName()).isEqualTo(customer.getName());
+            assertThat(c.getEmail()).isEqualTo(customer.getEmail());
+        });
+
+
+    }
+
+    @Test
+    void updateCustomerAge() {
+        Customer customer = new Customer(
+                faker.name().fullName(),
+                25,
+                faker.internet().emailAddress()
+        );
+
+        underTest.createCustomer(customer);
+
+        int id = underTest.getCustomers()
+                .stream()
+                .filter(c -> c.getEmail().equals(customer.getEmail()))
+                .map(Customer::getId)
+                .findFirst()
+                .orElseThrow();
+
+
+        var newAge = 30;
+
+        Customer updated = new Customer();
+        updated.setId(id);
+        updated.setAge(newAge);
+
+        underTest.updateCustomer(updated);
+
+        var actual = underTest.getCustomer(id);
+
+        assertThat(actual).isPresent().hasValueSatisfying(c -> {
+            assertThat(c.getId()).isEqualTo(id);
+            assertThat(c.getName()).isEqualTo(customer.getName());
+            assertThat(c.getAge()).isEqualTo(newAge);
+            assertThat(c.getEmail()).isEqualTo(customer.getEmail());
+        });
+    }
+
+    @Test
+    void existsCustomerWithEmail() {
         String email = faker.internet().emailAddress();
         Customer customer = new Customer(
                 faker.name().fullName(),
@@ -170,7 +316,16 @@ class CustomerJDBCDataAccessServiceTest extends TestContainersAbstract {
     }
 
     @Test
-    void existCustomerWithId() {
+    void existsCustomerWithEmailReturnsFalseWhenDoesNotExists() {
+        String email = faker.internet().emailAddress();
+
+        boolean actual = underTest.existCustomerWithEmail(email);
+
+        assertThat(actual).isFalse();
+    }
+
+    @Test
+    void existsCustomerWithId() {
         Customer customer = new Customer(
                 faker.name().fullName(),
                 25,
@@ -190,4 +345,13 @@ class CustomerJDBCDataAccessServiceTest extends TestContainersAbstract {
 
         assertThat(actual).isTrue();
     }
+
+    @Test
+    void existsCustomerWithIdWillReturnFalseWhenNotPresent() {
+        int id = -1;
+        var actual = underTest.existCustomerWithId(id);
+        assertThat(actual).isFalse();
+    }
+
+
 }
