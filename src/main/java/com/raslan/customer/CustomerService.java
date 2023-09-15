@@ -45,24 +45,24 @@ public class CustomerService {
         customerDAO.deleteCustomer(id);
     }
 
-    public Customer updateCustomer(Integer id, Customer customerToUpdate) {
+    public Customer updateCustomer(Integer id, CustomerUpdateRequest customerToUpdate) {
         Customer customer = getCustomer(id);
 
         boolean isChanged = false;
-        if (customerToUpdate.getName() != null && !customer.getName().equals(customerToUpdate.getName())) {
+        if (customerToUpdate.name() != null && !customer.getName().equals(customerToUpdate.name())) {
             isChanged = true;
-            customer.setName(customerToUpdate.getName());
+            customer.setName(customerToUpdate.name());
         }
-        if (customerToUpdate.getEmail() != null && !customer.getEmail().equals(customerToUpdate.getEmail())) {
-            if (customerDAO.existCustomerWithEmail(customerToUpdate.getEmail())) {
+        if (customerToUpdate.email() != null && !customer.getEmail().equals(customerToUpdate.email())) {
+            if (customerDAO.existCustomerWithEmail(customerToUpdate.email())) {
                 throw new DuplicatedRowException("the email already exists!!");
             }
             isChanged = true;
-            customer.setEmail(customerToUpdate.getEmail());
+            customer.setEmail(customerToUpdate.email());
         }
-        if (customerToUpdate.getAge() != null && !customer.getAge().equals(customerToUpdate.getAge())) {
+        if (customerToUpdate.age() != null && !customer.getAge().equals(customerToUpdate.age())) {
             isChanged = true;
-            customer.setAge(customerToUpdate.getAge());
+            customer.setAge(customerToUpdate.age());
         }
         if (!isChanged) {
             throw new RequestValidationException("No changes found");

@@ -129,13 +129,13 @@ class CustomerServiceTest {
 
         when(customerDAO.getCustomer(id)).thenReturn(Optional.of(customer));
 
-        Customer updated = new Customer(
+        CustomerUpdateRequest updated = new CustomerUpdateRequest(
                 "ahmed raslan updated",
-                23,
-                "youssef@gmail.com"
+                "youssef@gmail.com",
+                23
         );
 
-        when(customerDAO.existCustomerWithEmail(updated.getEmail())).thenReturn(false);
+        when(customerDAO.existCustomerWithEmail(updated.email())).thenReturn(false);
 
         //when
         underTest.updateCustomer(id, updated);
@@ -148,10 +148,9 @@ class CustomerServiceTest {
         Customer capturedCustomer = customerArgumentCaptor.getValue();
 
         assertThat(capturedCustomer.getId()).isEqualTo(customer.getId());
-        assertThat(capturedCustomer.getName()).isEqualTo(updated.getName());
-        assertThat(capturedCustomer.getEmail()).isEqualTo(updated.getEmail());
-        assertThat(capturedCustomer.getAge()).isEqualTo(updated.getAge());
-
+        assertThat(capturedCustomer.getName()).isEqualTo(updated.name());
+        assertThat(capturedCustomer.getEmail()).isEqualTo(updated.email());
+        assertThat(capturedCustomer.getAge()).isEqualTo(updated.age());
     }
 
 
@@ -163,7 +162,7 @@ class CustomerServiceTest {
 
         when(customerDAO.getCustomer(id)).thenReturn(Optional.of(customer));
 
-        Customer updated = new Customer("new name", null, null);
+        CustomerUpdateRequest updated = new CustomerUpdateRequest("new name", null, null);
 
         //when
         underTest.updateCustomer(id, updated);
@@ -176,7 +175,7 @@ class CustomerServiceTest {
         Customer capturedCustomer = customerArgumentCaptor.getValue();
 
         assertThat(capturedCustomer.getId()).isEqualTo(customer.getId());
-        assertThat(capturedCustomer.getName()).isEqualTo(updated.getName());
+        assertThat(capturedCustomer.getName()).isEqualTo(updated.name());
         assertThat(capturedCustomer.getEmail()).isEqualTo(customer.getEmail());
         assertThat(capturedCustomer.getAge()).isEqualTo(customer.getAge());
 
@@ -191,7 +190,7 @@ class CustomerServiceTest {
 
         when(customerDAO.getCustomer(id)).thenReturn(Optional.of(customer));
 
-        Customer updated = new Customer(null, 13, null);
+        CustomerUpdateRequest updated = new CustomerUpdateRequest(null, null, 13);
 
         //when
         underTest.updateCustomer(id, updated);
@@ -206,7 +205,7 @@ class CustomerServiceTest {
         assertThat(capturedCustomer.getId()).isEqualTo(customer.getId());
         assertThat(capturedCustomer.getName()).isEqualTo(customer.getName());
         assertThat(capturedCustomer.getEmail()).isEqualTo(customer.getEmail());
-        assertThat(capturedCustomer.getAge()).isEqualTo(updated.getAge());
+        assertThat(capturedCustomer.getAge()).isEqualTo(updated.age());
 
     }
 
@@ -220,7 +219,7 @@ class CustomerServiceTest {
 
         String newEmail = "newEmail@test.com";
 
-        Customer updated = new Customer(null, null, newEmail);
+        CustomerUpdateRequest updated = new CustomerUpdateRequest(null, newEmail, null);
 
         when(customerDAO.existCustomerWithEmail(newEmail)).thenReturn(false);
 
@@ -235,7 +234,7 @@ class CustomerServiceTest {
 
         assertThat(capturedCustomer.getId()).isEqualTo(customer.getId());
         assertThat(capturedCustomer.getName()).isEqualTo(customer.getName());
-        assertThat(capturedCustomer.getEmail()).isEqualTo(updated.getEmail());
+        assertThat(capturedCustomer.getEmail()).isEqualTo(updated.email());
         assertThat(capturedCustomer.getAge()).isEqualTo(customer.getAge());
     }
 
@@ -249,7 +248,7 @@ class CustomerServiceTest {
 
         String newEmail = "newEmail@test.com";
 
-        Customer updated = new Customer(null, null, newEmail);
+        CustomerUpdateRequest updated = new CustomerUpdateRequest(null, newEmail, null);
 
         when(customerDAO.existCustomerWithEmail(newEmail)).thenReturn(true);
 
@@ -270,7 +269,7 @@ class CustomerServiceTest {
 
         when(customerDAO.getCustomer(id)).thenReturn(Optional.of(customer));
 
-        Customer updated = new Customer(customer.getName(), customer.getAge(), customer.getEmail());
+        CustomerUpdateRequest updated = new CustomerUpdateRequest(customer.getName(), customer.getEmail(), customer.getAge());
 
         //when
         assertThatThrownBy(() -> underTest.updateCustomer(id, updated))
