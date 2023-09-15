@@ -48,18 +48,18 @@ public class CustomerService {
         Customer customer = getCustomer(id);
 
         boolean isChanged = false;
-        if (customer.getName() != null && !customer.getName().equals(customerToUpdate.getName())) {
+        if (customerToUpdate.getName() != null && !customer.getName().equals(customerToUpdate.getName())) {
             isChanged = true;
             customer.setName(customerToUpdate.getName());
         }
-        if (customer.getEmail() != null && !customer.getEmail().equals(customerToUpdate.getEmail())) {
+        if (customerToUpdate.getEmail() != null && !customer.getEmail().equals(customerToUpdate.getEmail())) {
             if (customerDAO.existCustomerWithEmail(customerToUpdate.getEmail())) {
                 throw new DuplicatedRowException("the email already exists!!");
             }
             isChanged = true;
             customer.setEmail(customerToUpdate.getEmail());
         }
-        if (customer.getAge() != null && !customer.getAge().equals(customerToUpdate.getAge())) {
+        if (customerToUpdate.getAge() != null && !customer.getAge().equals(customerToUpdate.getAge())) {
             isChanged = true;
             customer.setAge(customerToUpdate.getAge());
         }
