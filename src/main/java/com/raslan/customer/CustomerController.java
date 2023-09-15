@@ -25,8 +25,8 @@ public class CustomerController {
     }
 
     @PostMapping
-    public Customer CreateCustomer(@RequestBody Customer customer) {
-        return customerService.createCustomer(customer.getName(), customer.getAge(), customer.getEmail());
+    public Customer CreateCustomer(@RequestBody CustomerRegistrationRequest customer) {
+        return customerService.createCustomer(customer);
     }
 
     @DeleteMapping("/{id}")

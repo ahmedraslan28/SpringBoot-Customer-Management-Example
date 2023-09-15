@@ -67,12 +67,12 @@ class CustomerServiceTest {
 
     @Test
     void createCustomer() {
-        String email = "test@test.com";
-        String name = "ahmed raslan";
-        int age = 22;
-        when(customerDAO.existCustomerWithEmail(email)).thenReturn(false);
+        CustomerRegistrationRequest request = new CustomerRegistrationRequest("ahmed raslan",
+                "test@test.com",
+                22);
+        when(customerDAO.existCustomerWithEmail(request.email())).thenReturn(false);
 
-        underTest.createCustomer(name, age, email);
+        underTest.createCustomer(request);
 
         ArgumentCaptor<Customer> argumentCaptor = ArgumentCaptor.forClass(Customer.class);
 
@@ -81,18 +81,18 @@ class CustomerServiceTest {
         Customer customer = argumentCaptor.getValue();
 
         assertThat(customer.getId()).isNull();
-        assertThat(customer.getName()).isEqualTo(name);
-        assertThat(customer.getAge()).isEqualTo(age);
-        assertThat(customer.getEmail()).isEqualTo(email);
+        assertThat(customer.getName()).isEqualTo(request.name());
+        assertThat(customer.getAge()).isEqualTo(request.age());
+        assertThat(customer.getEmail()).isEqualTo(request.email());
     }
 
     @Test
     void throwExceptionWhenCreateCustomerWithDuplicateEmail() {
-        String email = "test@test.com";
-        String name = "ahmed raslan";
-        int age = 22;
-        when(customerDAO.existCustomerWithEmail(email)).thenReturn(true);
-        assertThatThrownBy(() -> underTest.createCustomer(name, age, email))
+        CustomerRegistrationRequest request = new CustomerRegistrationRequest("ahmed raslan",
+                "test@test.com",
+                22);
+        when(customerDAO.existCustomerWithEmail(request.email())).thenReturn(true);
+        assertThatThrownBy(() -> underTest.createCustomer(request))
                 .isInstanceOf(DuplicatedRowException.class)
                 .hasMessage("the email already exists!!");
 
@@ -125,7 +125,7 @@ class CustomerServiceTest {
     void updateAllCustomerProperties() {
         //given
         int id = 1;
-        Customer customer = new Customer(id,"ahmed raslan", 22, "ahmedraslan28@gmail.com");
+        Customer customer = new Customer(id, "ahmed raslan", 22, "ahmedraslan28@gmail.com");
 
         when(customerDAO.getCustomer(id)).thenReturn(Optional.of(customer));
 
@@ -156,10 +156,10 @@ class CustomerServiceTest {
 
 
     @Test
-    void canUpdateOnlyCustomerName(){
+    void canUpdateOnlyCustomerName() {
         //given
-        int id = 1 ;
-        Customer customer = new Customer(id,"ahmed",22,"test@gmail.com");
+        int id = 1;
+        Customer customer = new Customer(id, "ahmed", 22, "test@gmail.com");
 
         when(customerDAO.getCustomer(id)).thenReturn(Optional.of(customer));
 
@@ -184,10 +184,10 @@ class CustomerServiceTest {
     }
 
     @Test
-    void canUpdateOnlyCustomerAge(){
+    void canUpdateOnlyCustomerAge() {
         //given
-        int id = 1 ;
-        Customer customer = new Customer(id,"ahmed",22,"test@gmail.com");
+        int id = 1;
+        Customer customer = new Customer(id, "ahmed", 22, "test@gmail.com");
 
         when(customerDAO.getCustomer(id)).thenReturn(Optional.of(customer));
 
@@ -211,14 +211,14 @@ class CustomerServiceTest {
     }
 
     @Test
-    void canUpdateOnlyCustomerEmail(){
+    void canUpdateOnlyCustomerEmail() {
         //given
-        int id = 1 ;
-        Customer customer = new Customer(id,"ahmed",22,"test@gmail.com");
+        int id = 1;
+        Customer customer = new Customer(id, "ahmed", 22, "test@gmail.com");
 
         when(customerDAO.getCustomer(id)).thenReturn(Optional.of(customer));
 
-        String newEmail = "newEmail@test.com" ;
+        String newEmail = "newEmail@test.com";
 
         Customer updated = new Customer(null, null, newEmail);
 
@@ -240,21 +240,21 @@ class CustomerServiceTest {
     }
 
     @Test
-    void willThrowWhenTryingToUpdateCustomerEmailWhenAlreadyTaken(){
+    void willThrowWhenTryingToUpdateCustomerEmailWhenAlreadyTaken() {
         //given
-        int id = 1 ;
-        Customer customer = new Customer(id,"ahmed",22,"test@gmail.com");
+        int id = 1;
+        Customer customer = new Customer(id, "ahmed", 22, "test@gmail.com");
 
         when(customerDAO.getCustomer(id)).thenReturn(Optional.of(customer));
 
-        String newEmail = "newEmail@test.com" ;
+        String newEmail = "newEmail@test.com";
 
         Customer updated = new Customer(null, null, newEmail);
 
         when(customerDAO.existCustomerWithEmail(newEmail)).thenReturn(true);
 
         //when
-        assertThatThrownBy(() -> underTest.updateCustomer(id,updated))
+        assertThatThrownBy(() -> underTest.updateCustomer(id, updated))
                 .isInstanceOf(DuplicatedRowException.class)
                 .hasMessage("the email already exists!!");
 
@@ -265,15 +265,15 @@ class CustomerServiceTest {
     @Test
     void willThrowWhenCustomerUpdateHasNoChanges() {
         //given
-        int id = 1 ;
-        Customer customer = new Customer(id,"ahmed",22,"test@gmail.com");
+        int id = 1;
+        Customer customer = new Customer(id, "ahmed", 22, "test@gmail.com");
 
         when(customerDAO.getCustomer(id)).thenReturn(Optional.of(customer));
 
         Customer updated = new Customer(customer.getName(), customer.getAge(), customer.getEmail());
 
         //when
-        assertThatThrownBy(() -> underTest.updateCustomer(id,updated))
+        assertThatThrownBy(() -> underTest.updateCustomer(id, updated))
                 .isInstanceOf(RequestValidationException.class)
                 .hasMessage("No changes found");
 

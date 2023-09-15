@@ -27,11 +27,12 @@ public class CustomerService {
                 );
     }
 
-    public Customer createCustomer(String name, Integer age, String email) {
-        Customer customer = new Customer(name, age, email);
-        if (customerDAO.existCustomerWithEmail(email)) {
+    public Customer createCustomer(CustomerRegistrationRequest request) {
+        if (customerDAO.existCustomerWithEmail(request.email())) {
             throw new DuplicatedRowException("the email already exists!!");
         }
+
+        Customer customer = new Customer(request.name(), request.age(), request.email());
         customerDAO.createCustomer(customer);
 
         return customer;
