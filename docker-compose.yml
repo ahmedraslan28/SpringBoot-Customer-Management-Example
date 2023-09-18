@@ -10,7 +10,24 @@ services:
     volumes:
       - dp:/var/lib/postgresql/data
     networks:
-      dp:
+      - dp
+
+  customers-api:
+    container_name: customers-management-api
+    image: ahmedraslan28/customer-management-api
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://dp:5432/customer
+    ports:
+      - "8081:8080"
+    networks:
+      - dp
+
+    depends_on:
+      - dp
+    restart: unless-stopped
+
+
+
 
 volumes:
   dp:

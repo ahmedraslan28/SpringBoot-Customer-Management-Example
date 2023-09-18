@@ -9,14 +9,18 @@
     </parent>
 
     <groupId>com.raslan</groupId>
-    <artifactId>spring-boot-fullstack</artifactId>
+    <artifactId>customer-management-api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <organization>
+        <name>ahmedraslan28</name>
+    </organization>
 
     <name>spring-boot-practice</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
         <java.version>17</java.version>
+        <docker.username>ahmedraslan28</docker.username>
     </properties>
     <dependencies>
 
@@ -168,7 +172,22 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>3.3.2</version>
+                <configuration>
+                    <to>
+                        <image>docker.io/${docker.username}/${project.artifactId}:${project.version}</image>
+                        <tags>
+                            <tag>latest</tag>
+                        </tags>
+                    </to>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
 </project>
+<!--mvn clean package jib:build -Djib.to.auth.username=ahmedraslan28 -Djib.to.auth.password="passInsideDoubleQoute"-->
