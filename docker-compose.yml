@@ -7,6 +7,7 @@ services:
     environment:
       POSTGRES_USER: ahmedraslan
       POSTGRES_PASSWORD: admin
+    restart: unless-stopped
     volumes:
       - dp:/var/lib/postgresql/data
     networks:
