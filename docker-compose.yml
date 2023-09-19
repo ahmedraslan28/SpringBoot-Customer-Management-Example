@@ -15,6 +15,11 @@ services:
   customers-api:
     container_name: customers-management-api
     image: ahmedraslan28/customer-management-api
+
+
+# in case of building image using docker file instead of jib
+#    image: app-from-docker-file
+
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://dp:5432/customer
     ports:
