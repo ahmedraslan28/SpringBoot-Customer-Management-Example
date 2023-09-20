@@ -1,8 +1,7 @@
 package com.raslan.customer;
 
 import com.raslan.TestContainersAbstract;
-import org.apache.catalina.util.CustomObjectInputStream;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -11,10 +10,10 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class CustomerJDBCDataAccessServiceTest extends TestContainersAbstract {
-    private CustomerJDBCDataAccessService underTest;
+    private static CustomerJDBCDataAccessService underTest;
 
-    @BeforeEach
-    void setUP() {
+    @BeforeAll
+    static void setUP() {
         underTest = new CustomerJDBCDataAccessService(
                 getJdbcTemplate()
         );
