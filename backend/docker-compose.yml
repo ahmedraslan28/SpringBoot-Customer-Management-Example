@@ -1,12 +1,13 @@
 services:
   dp:
-    image: postgres
-    container_name: postgres:15.4
+    image: postgres:15.4
+    container_name: postgres
     ports:
       - "5432:5432"
     environment:
       POSTGRES_USER: ahmedraslan
       POSTGRES_PASSWORD: ahmedraslan
+      POSTGRES_DB: customer
     restart: unless-stopped
     volumes:
       - dp:/var/lib/postgresql/data
