@@ -2,6 +2,7 @@ package com.raslan.customer;
 
 import com.raslan.TestContainersAbstract;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -10,15 +11,16 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class CustomerJDBCDataAccessServiceTest extends TestContainersAbstract {
-    private static CustomerJDBCDataAccessService underTest;
+    private CustomerJDBCDataAccessService underTest;
 
-    @BeforeAll
-    static void setUP() {
+
+    //    @BeforeAll
+    @BeforeEach
+    void setUP() {
         underTest = new CustomerJDBCDataAccessService(
                 getJdbcTemplate()
         );
     }
-
     @Test
     void getCustomers() {
         Customer customer = new Customer(
