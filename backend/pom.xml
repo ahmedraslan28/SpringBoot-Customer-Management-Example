@@ -11,9 +11,6 @@
     <groupId>com.raslan</groupId>
     <artifactId>customer-management-api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <organization>
-        <name>ahmedraslan28</name>
-    </organization>
 
     <name>spring-boot-practice</name>
     <description>Demo project for Spring Boot</description>
@@ -21,6 +18,9 @@
     <properties>
         <java.version>17</java.version>
         <docker.username>ahmedraslan28</docker.username>
+        <docker.image.name>customer-management-api</docker.image.name>
+<!--     that mean it will be assigned during runtime-->
+        <docker.image.tag/>
     </properties>
     <dependencies>
 
@@ -179,7 +179,7 @@
                 <version>3.3.2</version>
                 <configuration>
                     <to>
-                        <image>docker.io/${docker.username}/${project.artifactId}:${project.version}</image>
+                        <image>docker.io/${docker.username}/${docker.image.name}:${docker.image.tag}</image>
                         <tags>
                             <tag>latest</tag>
                         </tags>
