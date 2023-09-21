@@ -38,5 +38,5 @@ jobs:
           cache: 'maven'
       - name: Build and run Unit\Integration Tests with Maven
         run: mvn -ntp -B verify
-#        ntp for not showing the logs for downloaded
+#        -ntp for not showing the logs for downloaded packages
 #        -B run in non-interactive mode, disable output color
