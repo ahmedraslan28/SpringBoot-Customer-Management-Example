@@ -74,7 +74,7 @@ jobs:
 #        This part passes a Maven system property -D to set the value of docker.image.tag.
 #        It retrieves the value from the build-number step output using the
 #        ${{steps.build-number.outputs.BUILD_NUMBER}} syntax.
-        run: mvn -ntp -B verify -D docker.image.tag ${{steps.build-number.outputs.BUILD_NUMBER}} jib:build
+        run: mvn -ntp -B verify -Ddocker.image.tag ${{steps.build-number.outputs.BUILD_NUMBER}} jib:build
 
       - name: Update Dockerrun.aws.json customer-management-api image tag with new build number
         run: |
