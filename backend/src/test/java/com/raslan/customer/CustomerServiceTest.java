@@ -46,7 +46,8 @@ class CustomerServiceTest {
                 id,
                 "Ahmed Raslan",
                 22,
-                "ahmedraslan28@gmail.com"
+                "ahmedraslan28@gmail.com",
+                Gender.MALE
         );
         when(customerDAO.getCustomer(id)).thenReturn(Optional.of(customer));
 
@@ -69,7 +70,8 @@ class CustomerServiceTest {
     void createCustomer() {
         CustomerRegistrationRequest request = new CustomerRegistrationRequest("ahmed raslan",
                 "test@test.com",
-                22);
+                22,
+                Gender.MALE);
         when(customerDAO.existCustomerWithEmail(request.email())).thenReturn(false);
 
         underTest.createCustomer(request);
@@ -84,13 +86,14 @@ class CustomerServiceTest {
         assertThat(customer.getName()).isEqualTo(request.name());
         assertThat(customer.getAge()).isEqualTo(request.age());
         assertThat(customer.getEmail()).isEqualTo(request.email());
+        assertThat(customer.getGender()).isEqualTo(request.gender());
     }
 
     @Test
     void throwExceptionWhenCreateCustomerWithDuplicateEmail() {
         CustomerRegistrationRequest request = new CustomerRegistrationRequest("ahmed raslan",
                 "test@test.com",
-                22);
+                22, Gender.MALE);
         when(customerDAO.existCustomerWithEmail(request.email())).thenReturn(true);
         assertThatThrownBy(() -> underTest.createCustomer(request))
                 .isInstanceOf(DuplicatedRowException.class)
@@ -125,7 +128,7 @@ class CustomerServiceTest {
     void updateAllCustomerProperties() {
         //given
         int id = 1;
-        Customer customer = new Customer(id, "ahmed raslan", 22, "ahmedraslan28@gmail.com");
+        Customer customer = new Customer(id, "ahmed raslan", 22, "ahmedraslan28@gmail.com", Gender.MALE);
 
         when(customerDAO.getCustomer(id)).thenReturn(Optional.of(customer));
 
@@ -151,6 +154,7 @@ class CustomerServiceTest {
         assertThat(capturedCustomer.getName()).isEqualTo(updated.name());
         assertThat(capturedCustomer.getEmail()).isEqualTo(updated.email());
         assertThat(capturedCustomer.getAge()).isEqualTo(updated.age());
+        assertThat(capturedCustomer.getGender()).isEqualTo(customer.getGender());
     }
 
 
@@ -158,7 +162,7 @@ class CustomerServiceTest {
     void canUpdateOnlyCustomerName() {
         //given
         int id = 1;
-        Customer customer = new Customer(id, "ahmed", 22, "test@gmail.com");
+        Customer customer = new Customer(id, "ahmed", 22, "test@gmail.com", Gender.MALE);
 
         when(customerDAO.getCustomer(id)).thenReturn(Optional.of(customer));
 
@@ -178,6 +182,7 @@ class CustomerServiceTest {
         assertThat(capturedCustomer.getName()).isEqualTo(updated.name());
         assertThat(capturedCustomer.getEmail()).isEqualTo(customer.getEmail());
         assertThat(capturedCustomer.getAge()).isEqualTo(customer.getAge());
+        assertThat(capturedCustomer.getGender()).isEqualTo(customer.getGender());
 
 
     }
@@ -186,7 +191,7 @@ class CustomerServiceTest {
     void canUpdateOnlyCustomerAge() {
         //given
         int id = 1;
-        Customer customer = new Customer(id, "ahmed", 22, "test@gmail.com");
+        Customer customer = new Customer(id, "ahmed", 22, "test@gmail.com", Gender.MALE);
 
         when(customerDAO.getCustomer(id)).thenReturn(Optional.of(customer));
 
@@ -206,6 +211,7 @@ class CustomerServiceTest {
         assertThat(capturedCustomer.getName()).isEqualTo(customer.getName());
         assertThat(capturedCustomer.getEmail()).isEqualTo(customer.getEmail());
         assertThat(capturedCustomer.getAge()).isEqualTo(updated.age());
+        assertThat(capturedCustomer.getGender()).isEqualTo(customer.getGender());
 
     }
 
@@ -213,7 +219,7 @@ class CustomerServiceTest {
     void canUpdateOnlyCustomerEmail() {
         //given
         int id = 1;
-        Customer customer = new Customer(id, "ahmed", 22, "test@gmail.com");
+        Customer customer = new Customer(id, "ahmed", 22, "test@gmail.com", Gender.MALE);
 
         when(customerDAO.getCustomer(id)).thenReturn(Optional.of(customer));
 
@@ -236,13 +242,14 @@ class CustomerServiceTest {
         assertThat(capturedCustomer.getName()).isEqualTo(customer.getName());
         assertThat(capturedCustomer.getEmail()).isEqualTo(updated.email());
         assertThat(capturedCustomer.getAge()).isEqualTo(customer.getAge());
+        assertThat(capturedCustomer.getGender()).isEqualTo(customer.getGender());
     }
 
     @Test
     void willThrowWhenTryingToUpdateCustomerEmailWhenAlreadyTaken() {
         //given
         int id = 1;
-        Customer customer = new Customer(id, "ahmed", 22, "test@gmail.com");
+        Customer customer = new Customer(id, "ahmed", 22, "test@gmail.com", Gender.MALE);
 
         when(customerDAO.getCustomer(id)).thenReturn(Optional.of(customer));
 
@@ -265,7 +272,7 @@ class CustomerServiceTest {
     void willThrowWhenCustomerUpdateHasNoChanges() {
         //given
         int id = 1;
-        Customer customer = new Customer(id, "ahmed", 22, "test@gmail.com");
+        Customer customer = new Customer(id, "ahmed", 22, "test@gmail.com", Gender.MALE);
 
         when(customerDAO.getCustomer(id)).thenReturn(Optional.of(customer));
 

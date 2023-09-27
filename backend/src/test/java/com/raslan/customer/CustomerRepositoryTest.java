@@ -27,7 +27,8 @@ class CustomerRepositoryTest extends TestContainersAbstract {
         Customer customer = new Customer(
                 faker.name().fullName(),
                 25,
-                email
+                email,
+                Gender.FEMALE
         );
 
         underTest.save(customer);
