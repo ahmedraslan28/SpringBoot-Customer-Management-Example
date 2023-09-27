@@ -12,7 +12,7 @@ import java.util.List;
 public class CustomerService {
     private final CustomerDAO customerDAO;
 
-    CustomerService(@Qualifier("jdbc") CustomerDAO customerDAO) {
+    CustomerService(@Qualifier("jpa") CustomerDAO customerDAO) {
         this.customerDAO = customerDAO;
     }
 
