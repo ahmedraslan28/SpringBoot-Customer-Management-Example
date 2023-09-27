@@ -43,7 +43,7 @@ const App = () => {
   }
   return (
     <SidebarWithHeader>
-      <Wrap spacing={"50px"} justify={"left"}>
+      <Wrap spacing={"30px"} justify={"center"}>
         {customers.map((customer, index) => (
           <WrapItem>
             <CardWithImage {...customer} imageNumber={index} />

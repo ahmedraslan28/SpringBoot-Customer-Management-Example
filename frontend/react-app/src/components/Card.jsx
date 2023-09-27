@@ -13,9 +13,16 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 
-export default function CardWithImage({ id, name, email, age, gender, imageNumber }) {
+export default function CardWithImage({
+  id,
+  name,
+  email,
+  age,
+  gender,
+  imageNumber,
+}) {
   return (
-    <Center py={6} className="mohamed">
+    <Center className="mohamed">
       <Box
         maxW={"300px"}
         minW={"300px"}
