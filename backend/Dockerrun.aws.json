@@ -3,7 +3,7 @@
   "containerDefinitions": [
     {
       "name": "customer-management-api",
-      "image": "ahmedraslan28/customer-management-api:26.09.2023.19.57.13",
+      "image": "ahmedraslan28/customer-management-api:27.09.2023.06.46.41",
       "essential": true,
       "memory": 512,
       "portMappings": [
