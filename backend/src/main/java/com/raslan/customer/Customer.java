@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name="customer")
+@Table(name = "customer")
 public class Customer {
     @Id
     @SequenceGenerator(
@@ -26,17 +26,20 @@ public class Customer {
     private Integer age;
     @Column(nullable = false, unique = true)
     private String email;
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
 
 
     public Customer() {
     }
 
 
-    public Customer(Integer id, String name, Integer age, String email) {
+    public Customer(Integer id, String name, Integer age, String email, Gender gender) {
         this.id = id;
         this.name = name;
         this.age = age;
         this.email = email;
+        this.gender = gender;
     }
 
     public Integer getId() {
@@ -51,10 +54,11 @@ public class Customer {
         return name;
     }
 
-    public Customer(String name, Integer age, String email) {
+    public Customer(String name, Integer age, String email, Gender gender) {
         this.name = name;
         this.age = age;
         this.email = email;
+        this.gender = gender;
     }
 
     public void setName(String name) {
@@ -77,27 +81,36 @@ public class Customer {
         this.email = email;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Customer customer = (Customer) o;
-        return Objects.equals(id, customer.id) && Objects.equals(name, customer.name) && Objects.equals(age, customer.age) && Objects.equals(email, customer.email);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, age, email);
-    }
-
 
     @Override
     public String toString() {
         return "Customer{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", age='" + age + '\'' +
+                ", age=" + age +
                 ", email='" + email + '\'' +
+                ", gender=" + gender +
                 '}';
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Customer customer = (Customer) o;
+        return Objects.equals(id, customer.id) && Objects.equals(name, customer.name) && Objects.equals(age, customer.age) && Objects.equals(email, customer.email) && gender == customer.gender;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, age, email, gender);
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
 }

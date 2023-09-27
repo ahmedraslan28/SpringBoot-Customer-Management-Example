@@ -32,7 +32,7 @@ public class CustomerService {
             throw new DuplicatedRowException("the email already exists!!");
         }
 
-        Customer customer = new Customer(request.name(), request.age(), request.email());
+        Customer customer = new Customer(request.name(), request.age(), request.email(), request.gender());
         customerDAO.createCustomer(customer);
 
         return customer;
