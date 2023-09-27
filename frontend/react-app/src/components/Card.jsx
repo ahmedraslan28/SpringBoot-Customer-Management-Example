@@ -13,7 +13,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 
-export default function CardWithImage({ id, name, email, age, gender }) {
+export default function CardWithImage({ id, name, email, age, gender, imageNumber }) {
   return (
     <Center py={6} className="mohamed">
       <Box
@@ -39,7 +39,7 @@ export default function CardWithImage({ id, name, email, age, gender }) {
             size={"xl"}
             src={`https://randomuser.me/api/portraits/${
               gender === "MALE" ? "men" : "women"
-            }/${id}.jpg`}
+            }/${imageNumber}.jpg`}
             css={{
               border: "2px solid white",
             }}
