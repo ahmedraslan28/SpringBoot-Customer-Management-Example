@@ -11,15 +11,13 @@ import { useEffect, useState } from "react";
 import { getCustomers } from "./services/client";
 import CardWithImage from "./components/Card";
 import { CreateCustomerDrawer } from "./components/Drawer";
-import { errorNotification } from "./services/Notification";
 const App = () => {
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [err, setError] = useState("");
-  useEffect(() => {
+  const fetchCustomers = () => {
     getCustomers()
       .then((res) => {
-        console.log(res);
         setCustomers(res.data);
       })
       .catch((err) => {
@@ -28,6 +26,9 @@ const App = () => {
       .finally(() => {
         setLoading(false);
       });
+  };
+  useEffect(() => {
+    fetchCustomers();
   }, []);
 
   if (loading) {
@@ -71,11 +72,11 @@ const App = () => {
   }
   return (
     <SidebarWithHeader>
-      <CreateCustomerDrawer />
+      <CreateCustomerDrawer fetchCustomers={fetchCustomers} />
       <Wrap spacing={"50px"} py={"5"} justify={"center"}>
         {customers.map((customer, index) => (
-          <WrapItem>
-            <CardWithImage {...customer} imageNumber={index} />
+          <WrapItem key={index}>
+            <CardWithImage fetchCustomers = {fetchCustomers} {...customer} imageNumber={index} />
           </WrapItem>
         ))}
       </Wrap>
