@@ -12,7 +12,9 @@ import {
   Tag,
   useColorModeValue,
 } from "@chakra-ui/react";
-
+import React from "react";
+import DeleteButton from "./DeleteCustomerButton";
+import { UpdateCustomerDrawer } from "./Drawer";
 export default function CardWithImage({
   id,
   name,
@@ -20,6 +22,7 @@ export default function CardWithImage({
   age,
   gender,
   imageNumber,
+  fetchCustomers,
 }) {
   return (
     <Center className="mohamed">
@@ -53,16 +56,30 @@ export default function CardWithImage({
           />
         </Flex>
 
-        <Box p={6}>
+        <Box p={6} pb={2}>
           <Stack spacing={2} align={"center"} mb={5}>
             <Tag borderRadius="full">{id}</Tag>
-            <Heading fontSize={"2xl"} fontWeight={500} fontFamily={"body"}>
+            <Heading fontSize={"2xl"} fontWeight={500} fontFamily={"body"} align={"center"}>
               {name}
             </Heading>
             <Text color={"gray.500"}>{email}</Text>
             <Text color={"gray.500"}>
               {age} | {gender}
             </Text>
+          </Stack>
+        </Box>
+        <Box p={3} pt={0}>
+          <Stack spacing={2} align={"stretch"}>
+            <DeleteButton fetchCustomers={fetchCustomers} id={id} name={name} />
+
+            <UpdateCustomerDrawer
+              id={id}
+              name={name}
+              age={age}
+              gender={gender}
+              email={email}
+              fetchCustomers={fetchCustomers}
+            />
           </Stack>
         </Box>
       </Box>

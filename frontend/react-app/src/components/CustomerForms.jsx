@@ -1,7 +1,7 @@
 import * as Yup from "yup";
 import { Box, Button, FormLabel, Input, Select, Stack } from "@chakra-ui/react";
 import { Formik, Form, useField } from "formik";
-import { saveCustomer } from "../services/client";
+import { updateCustomer, saveCustomer } from "../services/client";
 import { FieldError } from "./Alerts";
 import {
   errorNotification,
@@ -30,7 +30,7 @@ const MySelect = ({ label, ...props }) => {
   );
 };
 
-const CustomerRegistrationForm = ({ onClose }) => {
+export const CustomerRegistrationForm = ({ onClose, fetchCustomers }) => {
   return (
     <>
       <Formik
@@ -64,6 +64,7 @@ const CustomerRegistrationForm = ({ onClose }) => {
                 "Customer Saved",
                 `${customer.name} was successfully saved`
               );
+              fetchCustomers();
             })
             .catch((err) => {
               console.log(err);
@@ -119,4 +120,95 @@ const CustomerRegistrationForm = ({ onClose }) => {
     </>
   );
 };
-export default CustomerRegistrationForm;
+
+export const CustomerUpdateForm = ({
+  onClose,
+  fetchCustomers,
+  id,
+  name,
+  email,
+  age,
+  gender,
+}) => {
+  return (
+    <>
+      <Formik
+        initialValues={{
+          name: `${name}`,
+          email: `${email}`,
+          age: `${age}`,
+        }}
+        validationSchema={Yup.object({
+          name: Yup.string()
+            .max(50, "Must be 50 characters or less")
+            .required("Required"),
+          age: Yup.number()
+            .min(16, "customer must be at least 16 years old")
+            .max(99, "customer must be at most 99 years old")
+            .required("Required"),
+          email: Yup.string()
+            .email("Invalid email address")
+            .required("Required"),
+        })}
+        onSubmit={(customer, { setSubmitting }) => {
+          setSubmitting(true);
+          updateCustomer(customer, id)
+            .then((res) => {
+              onClose();
+              successNotification(
+                "Customer Updated",
+                `${customer.name} was successfully saved`
+              );
+              fetchCustomers();
+            })
+            .catch((err) => {
+              console.log(err);
+              errorNotification(
+                "Request Failed",
+                `${err.response.data.message}`
+              );
+            })
+            .finally(() => {
+              setSubmitting(false);
+            });
+        }}
+      >
+        {({ isSubmitting, isValid, dirty }) => {
+          return (
+            <Form>
+              <Stack spacing={"20px"}>
+                <MyTextInput
+                  label="Name"
+                  name="name"
+                  type="text"
+                  placeholder="Jane"
+                />
+
+                <MyTextInput
+                  label="Email"
+                  name="email"
+                  type="email"
+                  placeholder="jane@formik.com"
+                />
+
+                <MyTextInput
+                  label="Age"
+                  name="age"
+                  type="number"
+                  placeholder="18"
+                />
+
+                <Button
+                  type="submit"
+                  isDisabled={!(isValid && dirty) || isSubmitting}
+                >
+                  Submit
+                </Button>
+              </Stack>
+            </Form>
+          );
+        }}
+      </Formik>
+    </>
+  );
+};
