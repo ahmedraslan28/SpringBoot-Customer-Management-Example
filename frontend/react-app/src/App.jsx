@@ -14,7 +14,7 @@ import { CreateCustomerDrawer } from "./components/Drawer";
 const App = () => {
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [err, setError] = useState("");
+  const [err, setError] = useState("good");
   const fetchCustomers = () => {
     getCustomers()
       .then((res) => {
@@ -44,7 +44,7 @@ const App = () => {
       </SidebarWithHeader>
     );
   }
-  if (err) {
+  if (err !== "good") {
     return (
       <SidebarWithHeader>
         <CreateCustomerDrawer />
@@ -76,7 +76,11 @@ const App = () => {
       <Wrap spacing={"50px"} py={"5"} justify={"center"}>
         {customers.map((customer, index) => (
           <WrapItem key={index}>
-            <CardWithImage fetchCustomers = {fetchCustomers} {...customer} imageNumber={index} />
+            <CardWithImage
+              fetchCustomers={fetchCustomers}
+              {...customer}
+              imageNumber={index}
+            />
           </WrapItem>
         ))}
       </Wrap>
