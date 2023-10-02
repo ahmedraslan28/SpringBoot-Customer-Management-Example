@@ -43,3 +43,9 @@ export const updateCustomer = async (customer,id) => {
     throw error;
   }
 };
+
+/*
+http://customer-react-env.eba-yk5r2usj.me-south-1.elasticbeanstalk.com/customer-api-env.eba-yk5r2usj.me-south-1.elasticbeanstalk.com/api/v1/customer-api-env.eba-yk5r2usj.me-south-1.elasticbeanstalk.com/api/v1/customers
+
+api_base_url=customer-api-env.eba-yk5r2usj.me-south-1.elasticbeanstalk.com
+*/
