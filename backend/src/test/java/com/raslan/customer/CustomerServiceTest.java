@@ -3,13 +3,11 @@ package com.raslan.customer;
 import com.raslan.exception.DuplicatedRowException;
 import com.raslan.exception.RequestValidationException;
 import com.raslan.exception.ResourceNotFoundException;
-import org.apache.catalina.util.CustomObjectInputStream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
