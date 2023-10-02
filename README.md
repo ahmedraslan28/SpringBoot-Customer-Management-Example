@@ -1,1 +1,1 @@
-# SpringBoot-Angular-Customer-Management
+# SpringBoot-Customer-Management-Example
