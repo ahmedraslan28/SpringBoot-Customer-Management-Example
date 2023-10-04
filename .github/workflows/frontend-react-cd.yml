@@ -14,7 +14,7 @@ jobs:
     defaults:
       run:
         working-directory: ./frontend/react-app
-        
+
     steps:
       - name: clone the repo to the runner
         uses: actions/checkout@v4
@@ -33,7 +33,7 @@ jobs:
         run: |
           docker build --build-arg REACT_APP_API_BASE_URL=http://customer-api-env.eba-yk5r2usj.me-south-1.elasticbeanstalk.com -t ahmedraslan28/customer-management-react:${{steps.build-number.outputs.BUILD_NUMBER}} -t ahmedraslan28/customer-management-react:latest .
           docker image push --all-tags ahmedraslan28/customer-management-react
-      
+
       - name: Update Dockerrun.aws.json customer-management-react image tag with new build number
         run: |
           echo "Dockerrun.aws.json before updating tag"
@@ -41,7 +41,7 @@ jobs:
           sed -i -E 's_(ahmedraslan28/customer-management-react:)([^"]*)_\1'${{steps.build-number.outputs.BUILD_NUMBER}}'_' Dockerrun.aws.json
           echo "Dockerrun.aws.json after updating tag"
           cat Dockerrun.aws.json
-      
+
       - name: Deploy to Elastic Beanstalk
         uses: einaregilsson/beanstalk-deploy@v21
         with:
@@ -52,8 +52,8 @@ jobs:
           version_label: ${{ steps.build-number.outputs.BUILD_NUMBER }}
           version_description: ${{ github.SHA }}
           region: ${{ secrets.EB_REGION }}
-          deployment_package: frontend/Dockerrun.aws.json
-      
+          deployment_package: frontend/react-app/Dockerrun.aws.json
+
       - name: Commit and push Dockerrun.aws.json
         run: |
           git config user.name github-actions
