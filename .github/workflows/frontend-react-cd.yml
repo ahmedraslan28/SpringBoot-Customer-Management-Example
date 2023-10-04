@@ -32,7 +32,7 @@ jobs:
       - name: build image and push image
         run: |
           docker build --build-arg REACT_APP_API_BASE_URL=http://customer-api-env.eba-yk5r2usj.me-south-1.elasticbeanstalk.com -t ahmedraslan28/customer-management-react:${{steps.build-number.outputs.BUILD_NUMBER}} -t ahmedraslan28/customer-management-react:latest .
-          docker image push --all-tags ahmedraslan28/customer-management-api
+          docker image push --all-tags ahmedraslan28/customer-management-react
       
       - name: Update Dockerrun.aws.json customer-management-react image tag with new build number
         run: |
