@@ -30,7 +30,7 @@ jobs:
       run:
         working-directory: ./backend
     steps:
-      - name: clone the repo to the machine
+      - name: clone the repo to the runner
         uses: actions/checkout@v4
       - name: download java with maven
         uses: actions/setup-java@v3
