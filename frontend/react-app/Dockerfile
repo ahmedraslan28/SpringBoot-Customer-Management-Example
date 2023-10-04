@@ -1,14 +1,16 @@
 FROM node:20-alpine 
 
-ARG api_base_url
+ARG REACT_APP_API_BASE_URL
 
 WORKDIR /app 
 
-COPY . . 
+ENV REACT_APP_API_BASE_URL=$REACT_APP_API_BASE_URL
 
-RUN echo "REACT_APP_API_BASE_URL = ${api_base_url}" > .env
+COPY package*.json .
 
-RUN npm install --silent 
+RUN npm install --silent
+
+COPY . .
 
 EXPOSE 3000
 
