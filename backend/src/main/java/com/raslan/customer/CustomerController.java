@@ -1,5 +1,7 @@
 package com.raslan.customer;
 
+import com.raslan.jwt.JWTUtil;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -9,9 +11,11 @@ import java.util.List;
 public class CustomerController {
 
     private final CustomerService customerService;
+    private final JWTUtil jwtUtil;
 
-    public CustomerController(CustomerService customerService) {
+    public CustomerController(CustomerService customerService, JWTUtil jwtUtil) {
         this.customerService = customerService;
+        this.jwtUtil = jwtUtil;
     }
 
     @GetMapping
@@ -25,8 +29,13 @@ public class CustomerController {
     }
 
     @PostMapping
-    public Customer CreateCustomer(@RequestBody CustomerRegistrationRequest customer) {
-        return customerService.createCustomer(customer);
+    public ResponseEntity<?> CreateCustomer(@RequestBody CustomerRegistrationRequest customer) {
+        customerService.createCustomer(customer);
+        String token = jwtUtil.issueToken(customer.email(), "ROLE_USER");
+        String body = """
+                {"token" : "%s"}
+                """ ;
+        return ResponseEntity.ok(String.format(body, token));
     }
 
     @DeleteMapping("/{id}")

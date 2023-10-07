@@ -22,6 +22,9 @@
 <!--     that mean it will be assigned during runtime-->
         <docker.image.tag/>
         <jwt.version>0.12.2</jwt.version>
+        <jwt.issuer>reso.com</jwt.issuer>
+        <jwt.expiration.days>15</jwt.expiration.days>
+
     </properties>
     <dependencies>
 

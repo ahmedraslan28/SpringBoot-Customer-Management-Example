@@ -8,6 +8,9 @@ cors:
   allowed-methods: "*"
 
 spring:
+  devtools:
+    restart:
+      log-condition-evaluation-delta: false
   datasource:
     url: jdbc:postgresql://localhost:5432/customer
     username: ahmedraslan
