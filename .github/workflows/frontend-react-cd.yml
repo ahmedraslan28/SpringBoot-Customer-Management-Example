@@ -16,7 +16,7 @@ jobs:
         working-directory: ./frontend/react-app
 
     steps:
-      - name: clone the repo to the runner
+      - name: clone repo to the runner
         uses: actions/checkout@v4
 
       - name: Login To Docker Hub
