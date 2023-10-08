@@ -4,6 +4,7 @@ import com.raslan.exception.DuplicatedRowException;
 import com.raslan.exception.RequestValidationException;
 import com.raslan.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,9 +12,10 @@ import java.util.List;
 @Service
 public class CustomerService {
     private final CustomerDAO customerDAO;
-
-    CustomerService(@Qualifier("jpa") CustomerDAO customerDAO) {
+    private final PasswordEncoder passwordEncoder;
+    CustomerService(@Qualifier("jpa") CustomerDAO customerDAO, PasswordEncoder passwordEncoder) {
         this.customerDAO = customerDAO;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<Customer> getAllCustomers() {
@@ -32,11 +34,13 @@ public class CustomerService {
             throw new DuplicatedRowException("the email already exists!!");
         }
 
+        String encodedPassword = passwordEncoder.encode(request.password()) ;
+
         Customer customer = new Customer(
                 request.name(),
                 request.age(),
                 request.email(),
-                request.password(),
+                encodedPassword,
                 request.gender()
         );
 
