@@ -99,5 +99,11 @@ public class CustomerJDBCDataAccessService implements CustomerDAO {
         return found != null && found > 0;
     }
 
-
+    @Override
+    public Optional<Customer> getUserByEmail(String email) {
+        var sql = """
+                    select * from customer where email = ?
+                """;
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Customer.class), email).stream().findFirst();
+    }
 }

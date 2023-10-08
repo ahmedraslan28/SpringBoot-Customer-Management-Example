@@ -16,5 +16,6 @@ public interface CustomerDAO {
 
     boolean existCustomerWithEmail(String email) ;
     boolean existCustomerWithId(Integer id) ;
+    Optional<Customer> getUserByEmail(String email) ;
 
 }
