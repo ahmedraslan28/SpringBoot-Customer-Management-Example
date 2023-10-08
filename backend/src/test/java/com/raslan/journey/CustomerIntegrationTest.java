@@ -39,7 +39,7 @@ public class CustomerIntegrationTest {
         int age = random.nextInt(18, 90);
         Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
 
-        CustomerRegistrationRequest request = new CustomerRegistrationRequest(name, email, age, gender);
+        CustomerRegistrationRequest request = new CustomerRegistrationRequest(name, email, "password", age, gender);
 
         // post a new customer
         client.post()
@@ -68,7 +68,7 @@ public class CustomerIntegrationTest {
                 .map(Customer::getId)
                 .findFirst()
                 .orElseThrow();
-        Customer expectedCustomer = new Customer(id, name, age, email, gender);
+        Customer expectedCustomer = new Customer(id, name, age, email, "password", gender);
         assertThat(allCustomers).contains(expectedCustomer);
     }
 
@@ -79,7 +79,7 @@ public class CustomerIntegrationTest {
         int age = random.nextInt(18, 90);
         Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
 
-        CustomerRegistrationRequest request = new CustomerRegistrationRequest(name, email, age, gender);
+        CustomerRegistrationRequest request = new CustomerRegistrationRequest(name, email, "password", age, gender);
 
         // post a new customer
         client.post()
@@ -133,7 +133,7 @@ public class CustomerIntegrationTest {
         String email = name + "@reso.com";
         int age = random.nextInt(18, 90);
         Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
-        CustomerRegistrationRequest request = new CustomerRegistrationRequest(name, email, age, gender);
+        CustomerRegistrationRequest request = new CustomerRegistrationRequest(name, email, "password", age, gender);
 
         // post a new customer
         client.post()
@@ -188,7 +188,7 @@ public class CustomerIntegrationTest {
                 .returnResult()
                 .getResponseBody();
 
-        Customer expectedCustomer = new Customer(id, newName, age, email, gender);
+        Customer expectedCustomer = new Customer(id, newName, age, email, "password", gender);
 
         assertThat(expectedCustomer).isEqualTo(updatedCustomer) ;
     }

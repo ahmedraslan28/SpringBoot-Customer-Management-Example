@@ -27,15 +27,20 @@ public class CustomerService {
                 );
     }
 
-    public Customer createCustomer(CustomerRegistrationRequest request) {
+    public void createCustomer(CustomerRegistrationRequest request) {
         if (customerDAO.existCustomerWithEmail(request.email())) {
             throw new DuplicatedRowException("the email already exists!!");
         }
 
-        Customer customer = new Customer(request.name(), request.age(), request.email(), request.gender());
-        customerDAO.createCustomer(customer);
+        Customer customer = new Customer(
+                request.name(),
+                request.age(),
+                request.email(),
+                request.password(),
+                request.gender()
+        );
 
-        return customer;
+        customerDAO.createCustomer(customer);
     }
 
     public void deleteCustomer(Integer id) {

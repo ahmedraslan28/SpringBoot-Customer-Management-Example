@@ -22,7 +22,7 @@ class CustomerRepositoryTest extends TestContainersAbstract {
                 faker.name().fullName(),
                 25,
                 email,
-                Gender.FEMALE
+                "password", Gender.FEMALE
         );
 
         underTest.save(customer);

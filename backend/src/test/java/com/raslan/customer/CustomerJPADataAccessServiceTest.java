@@ -45,7 +45,7 @@ class CustomerJPADataAccessServiceTest {
                 "ahmed raslan",
                 18,
                 "ahmedraslan28@gmail.com",
-                Gender.FEMALE
+                "password", Gender.FEMALE
         );
         underTest.createCustomer(customer);
         verify(customerRepository).save(customer);
@@ -64,7 +64,7 @@ class CustomerJPADataAccessServiceTest {
                 "ahmed raslan",
                 18,
                 "ahmedraslan28@gmail.com",
-                Gender.FEMALE
+                "password", Gender.FEMALE
         );
         underTest.updateCustomer(customer);
         verify(customerRepository).save(customer);

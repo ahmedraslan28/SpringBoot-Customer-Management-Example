@@ -25,7 +25,8 @@ class CustomerJDBCDataAccessServiceTest extends TestContainersAbstract {
                 faker.name().fullName(),
                 25,
                 faker.internet().emailAddress(),
-                Gender.FEMALE
+                "password"
+                , Gender.FEMALE
         );
 
         underTest.createCustomer(customer);
@@ -41,7 +42,7 @@ class CustomerJDBCDataAccessServiceTest extends TestContainersAbstract {
                 faker.name().fullName(),
                 25,
                 faker.internet().emailAddress(),
-                Gender.FEMALE
+                "password", Gender.FEMALE
         );
 
         underTest.createCustomer(customer);
@@ -80,6 +81,7 @@ class CustomerJDBCDataAccessServiceTest extends TestContainersAbstract {
                 faker.name().fullName(),
                 25,
                 faker.internet().emailAddress(),
+                "password",
                 Gender.FEMALE
         );
 
@@ -104,7 +106,7 @@ class CustomerJDBCDataAccessServiceTest extends TestContainersAbstract {
                 faker.name().fullName(),
                 25,
                 faker.internet().emailAddress(),
-                Gender.FEMALE
+                "password", Gender.FEMALE
         );
 
         underTest.createCustomer(customer);
@@ -126,7 +128,7 @@ class CustomerJDBCDataAccessServiceTest extends TestContainersAbstract {
                 faker.name().fullName(),
                 25,
                 faker.internet().emailAddress(),
-                Gender.FEMALE
+                "password", Gender.FEMALE
         );
 
         underTest.createCustomer(customer);
@@ -170,7 +172,7 @@ class CustomerJDBCDataAccessServiceTest extends TestContainersAbstract {
                 faker.name().fullName(),
                 25,
                 faker.internet().emailAddress(),
-                Gender.FEMALE
+                "password", Gender.FEMALE
         );
 
         underTest.createCustomer(customer);
@@ -210,7 +212,7 @@ class CustomerJDBCDataAccessServiceTest extends TestContainersAbstract {
                 faker.name().fullName(),
                 25,
                 faker.internet().emailAddress(),
-                Gender.FEMALE
+                "password", Gender.FEMALE
         );
 
         underTest.createCustomer(customer);
@@ -248,6 +250,7 @@ class CustomerJDBCDataAccessServiceTest extends TestContainersAbstract {
                 faker.name().fullName(),
                 25,
                 faker.internet().emailAddress(),
+                "password",
                 Gender.FEMALE
         );
 
@@ -284,7 +287,7 @@ class CustomerJDBCDataAccessServiceTest extends TestContainersAbstract {
                 faker.name().fullName(),
                 25,
                 faker.internet().emailAddress(),
-                Gender.FEMALE
+                "password", Gender.FEMALE
         );
 
         underTest.createCustomer(customer);
@@ -323,7 +326,7 @@ class CustomerJDBCDataAccessServiceTest extends TestContainersAbstract {
                 faker.name().fullName(),
                 25,
                 email,
-                Gender.FEMALE
+                "password", Gender.FEMALE
         );
         underTest.createCustomer(customer);
         boolean actual = underTest.existCustomerWithEmail(email);
@@ -345,7 +348,7 @@ class CustomerJDBCDataAccessServiceTest extends TestContainersAbstract {
                 faker.name().fullName(),
                 25,
                 faker.internet().emailAddress(),
-                Gender.FEMALE
+                "password", Gender.FEMALE
         );
 
         underTest.createCustomer(customer);

@@ -15,17 +15,18 @@ import static org.mockito.Mockito.when;
 class CustomerRowMapperTest {
 
     @Mock
-    ResultSet resultSet ;
+    ResultSet resultSet;
 
     @Test
     void mapRow() throws SQLException {
         //given
-        CustomerRowMapper customerRowMapper = new CustomerRowMapper() ;
-        when(resultSet.getInt("id")).thenReturn(1) ;
-        when(resultSet.getInt("age")).thenReturn(22) ;
-        when(resultSet.getString("name")).thenReturn("ahmed") ;
-        when(resultSet.getString("email")).thenReturn("ahmed@gmail.com") ;
-        when(resultSet.getString("gender")).thenReturn("FEMALE") ;
+        CustomerRowMapper customerRowMapper = new CustomerRowMapper();
+        when(resultSet.getInt("id")).thenReturn(1);
+        when(resultSet.getInt("age")).thenReturn(22);
+        when(resultSet.getString("name")).thenReturn("ahmed");
+        when(resultSet.getString("email")).thenReturn("ahmed@gmail.com");
+        when(resultSet.getString("password")).thenReturn("password");
+        when(resultSet.getString("gender")).thenReturn("FEMALE");
 
 
         // When
@@ -37,6 +38,7 @@ class CustomerRowMapperTest {
                 "ahmed",
                 22,
                 "ahmed@gmail.com",
+                "password",
                 Gender.FEMALE
         );
         assertThat(actual).isEqualTo(expected);

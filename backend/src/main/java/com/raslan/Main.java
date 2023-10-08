@@ -29,7 +29,7 @@ public class Main {
             Customer customer = new Customer(
                     firstName + " " + lastName,
                     age,
-                    firstName + "_" + lastName + "@StartApp.com", gender);
+                    firstName + "_" + lastName + "@StartApp.com", "password", gender);
             customerRepository.save(customer);
         };
     }
