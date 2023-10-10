@@ -51,10 +51,11 @@ public class CustomerController {
     }
 
     @PutMapping("/{id}")
-    public Customer updateCustomer(@PathVariable("id") Integer id,
+    public CustomerDTO updateCustomer(@PathVariable("id") Integer id,
                                    @RequestBody CustomerUpdateRequestDTO customerToUpdate) {
-
-        return customerService.updateCustomer(id, customerToUpdate) ;
+        return customerMapper.customerToCustomerDto(
+                customerService.updateCustomer(id, customerToUpdate)
+        );
     }
 
 
