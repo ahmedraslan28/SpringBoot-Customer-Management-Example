@@ -5,6 +5,7 @@ import com.raslan.dto.CustomerUpdateRequestDTO;
 import com.raslan.exception.DuplicatedRowException;
 import com.raslan.exception.RequestValidationException;
 import com.raslan.exception.ResourceNotFoundException;
+import com.raslan.mapper.CustomerRequestsMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,9 +16,14 @@ import java.util.List;
 public class CustomerService {
     private final CustomerDAO customerDAO;
     private final PasswordEncoder passwordEncoder;
-    CustomerService(@Qualifier("jpa") CustomerDAO customerDAO, PasswordEncoder passwordEncoder) {
+
+    private final CustomerRequestsMapper customerRequestsMapper ;
+    CustomerService(@Qualifier("jpa") CustomerDAO customerDAO,
+                    PasswordEncoder passwordEncoder,
+                    CustomerRequestsMapper customerRequestsMapper) {
         this.customerDAO = customerDAO;
         this.passwordEncoder = passwordEncoder;
+        this.customerRequestsMapper = customerRequestsMapper;
     }
 
     public List<Customer> getAllCustomers() {
@@ -38,13 +44,7 @@ public class CustomerService {
 
         String encodedPassword = passwordEncoder.encode(request.password()) ;
 
-        Customer customer = new Customer(
-                request.name(),
-                request.age(),
-                request.email(),
-                encodedPassword,
-                request.gender()
-        );
+        Customer customer = customerRequestsMapper.registrationRequestrequestToCustomer(passwordEncoder, request);
 
         customerDAO.createCustomer(customer);
     }

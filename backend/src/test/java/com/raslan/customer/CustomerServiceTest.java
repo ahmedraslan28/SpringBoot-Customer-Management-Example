@@ -5,6 +5,7 @@ import com.raslan.dto.CustomerUpdateRequestDTO;
 import com.raslan.exception.DuplicatedRowException;
 import com.raslan.exception.RequestValidationException;
 import com.raslan.exception.ResourceNotFoundException;
+import com.raslan.mapper.CustomerRequestsMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,9 +32,12 @@ class CustomerServiceTest {
     @Mock
     private PasswordEncoder passwordEncoder ;
 
+    @Mock
+    private CustomerRequestsMapper customerRequestsMapper ;
+
     @BeforeEach
     void setUp() {
-        underTest = new CustomerService(customerDAO, passwordEncoder);
+        underTest = new CustomerService(customerDAO, passwordEncoder, customerRequestsMapper);
     }
 
 
