@@ -42,8 +42,6 @@ public class CustomerService {
             throw new DuplicatedRowException("the email already exists!!");
         }
 
-        String encodedPassword = passwordEncoder.encode(request.password()) ;
-
         Customer customer = customerRequestsMapper.registrationRequestrequestToCustomer(passwordEncoder, request);
 
         customerDAO.createCustomer(customer);

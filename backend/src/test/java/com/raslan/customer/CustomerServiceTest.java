@@ -79,12 +79,16 @@ class CustomerServiceTest {
         CustomerRegistrationRequestDTO request = new CustomerRegistrationRequestDTO(
                 "ahmed raslan",
                 "test@test.com",
-                "password", 22,
+                "password",
+                22,
                 Gender.MALE);
         when(customerDAO.existCustomerWithEmail(request.email())).thenReturn(false);
 
         String encodedPassword = "kkf$3kg%k#92@4;" ;
-        when(passwordEncoder.encode(request.password())).thenReturn(encodedPassword);
+
+        when(customerRequestsMapper.registrationRequestrequestToCustomer(passwordEncoder, request)).thenReturn(
+                new Customer(request.name(),request.age(), request.email(), encodedPassword, request.gender())
+        );
 
         underTest.createCustomer(request);
 
