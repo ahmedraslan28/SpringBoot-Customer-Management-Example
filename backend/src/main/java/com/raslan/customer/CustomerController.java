@@ -3,6 +3,7 @@ package com.raslan.customer;
 import com.raslan.dto.CustomerDTO;
 import com.raslan.dto.CustomerRegistrationRequestDTO;
 import com.raslan.dto.CustomerUpdateRequestDTO;
+import com.raslan.dto.TokenDTO;
 import com.raslan.jwt.JWTUtil;
 import com.raslan.mapper.CustomerMapper;
 import org.springframework.http.ResponseEntity;
@@ -41,10 +42,7 @@ public class CustomerController {
     public ResponseEntity<?> CreateCustomer(@RequestBody CustomerRegistrationRequestDTO customer) {
         customerService.createCustomer(customer);
         String token = jwtUtil.issueToken(customer.email(), "ROLE_USER");
-        String body = """
-                {"token" : "%s"}
-                """ ;
-        return ResponseEntity.ok(String.format(body, token));
+        return ResponseEntity.ok(new TokenDTO(token));
     }
 
     @DeleteMapping("/{id}")
