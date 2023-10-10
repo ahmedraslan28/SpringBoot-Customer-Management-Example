@@ -3,9 +3,10 @@ package com.raslan.journey;
 
 import com.github.javafaker.Faker;
 import com.raslan.customer.Customer;
+import com.raslan.customer.Gender;
 import com.raslan.dto.CustomerRegistrationRequestDTO;
 import com.raslan.dto.CustomerUpdateRequestDTO;
-import com.raslan.customer.Gender;
+import com.raslan.dto.TokenDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,6 +20,7 @@ import java.util.Random;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 public class CustomerIntegrationTest {
@@ -39,22 +41,32 @@ public class CustomerIntegrationTest {
         int age = random.nextInt(18, 90);
         Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
 
-        CustomerRegistrationRequestDTO request = new CustomerRegistrationRequestDTO(name, email, "password", age, gender);
+        CustomerRegistrationRequestDTO request = new CustomerRegistrationRequestDTO(
+                name,
+                email,
+                "89@jkbfk#jkdkjl%886",
+                age,
+                gender
+        );
 
-        // post a new customer
-        client.post()
-                .uri(CUSTOMER_URL)
-                .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(Mono.just(request), CustomerRegistrationRequestDTO.class)
-                .exchange()
-                .expectStatus()
-                .isOk();
+        // post a new customer and get token
+        String jwtToken = client.post()
+                        .uri(CUSTOMER_URL)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(Mono.just(request), CustomerRegistrationRequestDTO.class)
+                        .exchange()
+                        .expectStatus()
+                        .isOk()
+                        .expectBody(TokenDTO.class)
+                        .returnResult()
+                        .getResponseBody().token();
 
         // make sure that the posted customer is present
         List<Customer> allCustomers = client.get()
                 .uri(CUSTOMER_URL)
                 .accept(MediaType.APPLICATION_JSON)
+                .header(AUTHORIZATION, String.format("Bearer %s", jwtToken))
                 .exchange()
                 .expectStatus()
                 .isOk()
@@ -63,7 +75,8 @@ public class CustomerIntegrationTest {
                 .returnResult()
                 .getResponseBody();
 
-        int id = allCustomers.stream()
+        int id = allCustomers
+                .stream()
                 .filter(c -> c.getEmail().equals(email))
                 .map(Customer::getId)
                 .findFirst()
@@ -82,19 +95,23 @@ public class CustomerIntegrationTest {
         CustomerRegistrationRequestDTO request = new CustomerRegistrationRequestDTO(name, email, "password", age, gender);
 
         // post a new customer
-        client.post()
+        String jwtToken = client.post()
                 .uri(CUSTOMER_URL)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(Mono.just(request), CustomerRegistrationRequestDTO.class)
                 .exchange()
                 .expectStatus()
-                .isOk();
+                .isOk()
+                .expectBody(TokenDTO.class)
+                .returnResult()
+                .getResponseBody().token();
 
         // make sure that the posted customer is present and get his id
         List<Customer> allCustomers = client.get()
                 .uri(CUSTOMER_URL)
                 .accept(MediaType.APPLICATION_JSON)
+                .header(AUTHORIZATION, String.format("Bearer %s", jwtToken))
                 .exchange()
                 .expectStatus()
                 .isOk()
@@ -113,6 +130,7 @@ public class CustomerIntegrationTest {
         client.delete()
                 .uri(CUSTOMER_URL + "/{id}", id)
                 .accept(MediaType.APPLICATION_JSON)
+                .header(AUTHORIZATION, String.format("Bearer %s", jwtToken))
                 .exchange()
                 .expectStatus()
                 .isOk();
@@ -122,6 +140,7 @@ public class CustomerIntegrationTest {
         client.get()
                 .uri(CUSTOMER_URL + "/{id}", id)
                 .accept(MediaType.APPLICATION_JSON)
+                .header(AUTHORIZATION, String.format("Bearer %s", jwtToken))
                 .exchange()
                 .expectStatus()
                 .isNotFound();
@@ -136,19 +155,23 @@ public class CustomerIntegrationTest {
         CustomerRegistrationRequestDTO request = new CustomerRegistrationRequestDTO(name, email, "password", age, gender);
 
         // post a new customer
-        client.post()
+        String jwtToken = client.post()
                 .uri(CUSTOMER_URL)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(Mono.just(request), CustomerRegistrationRequestDTO.class)
                 .exchange()
                 .expectStatus()
-                .isOk();
+                .isOk()
+                .expectBody(TokenDTO.class)
+                .returnResult()
+                .getResponseBody().token();
 
         // make sure that the posted customer is present and get his id
         List<Customer> allCustomers = client.get()
                 .uri(CUSTOMER_URL)
                 .accept(MediaType.APPLICATION_JSON)
+                .header(AUTHORIZATION, String.format("Bearer %s", jwtToken))
                 .exchange()
                 .expectStatus()
                 .isOk()
@@ -170,6 +193,7 @@ public class CustomerIntegrationTest {
         client.put()
                 .uri(CUSTOMER_URL + "/{id}", id)
                 .accept(MediaType.APPLICATION_JSON)
+                .header(AUTHORIZATION, String.format("Bearer %s", jwtToken))
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(Mono.just(updated), CustomerUpdateRequestDTO.class)
                 .exchange()
