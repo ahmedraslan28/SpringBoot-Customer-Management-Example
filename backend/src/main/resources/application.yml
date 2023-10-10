@@ -3,11 +3,14 @@ server:
   error:
     include-message: always
 
+
 cors:
   allowed-origins: "*"
   allowed-methods: "*"
 
 spring:
+  main:
+    allow-bean-definition-overriding: true
   devtools:
     restart:
       log-condition-evaluation-delta: false
