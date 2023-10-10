@@ -1,8 +1,10 @@
 package com.raslan.customer;
 
+import com.raslan.dto.CustomerDTO;
 import com.raslan.dto.CustomerRegistrationRequestDTO;
 import com.raslan.dto.CustomerUpdateRequestDTO;
 import com.raslan.jwt.JWTUtil;
+import com.raslan.mapper.CustomerMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,19 +17,24 @@ public class CustomerController {
     private final CustomerService customerService;
     private final JWTUtil jwtUtil;
 
-    public CustomerController(CustomerService customerService, JWTUtil jwtUtil) {
+    private final CustomerMapper customerMapper ;
+
+    public CustomerController(CustomerService customerService, JWTUtil jwtUtil, CustomerMapper customerMapper) {
         this.customerService = customerService;
         this.jwtUtil = jwtUtil;
+        this.customerMapper = customerMapper;
     }
 
     @GetMapping
-    public List<Customer> getCustomers() {
-        return customerService.getAllCustomers();
+    public List<CustomerDTO> getCustomers() {
+        List<Customer> customers = customerService.getAllCustomers();
+        return customerMapper.listOfCustomersToDto(customers) ;
     }
 
     @GetMapping("/{id}")
-    public Customer getCustomer(@PathVariable("id") Integer id) {
-        return customerService.getCustomer(id);
+    public CustomerDTO getCustomer(@PathVariable("id") Integer id) {
+        Customer customer = customerService.getCustomer(id) ;
+        return customerMapper.customerToCustomerDto(customer);
     }
 
     @PostMapping
