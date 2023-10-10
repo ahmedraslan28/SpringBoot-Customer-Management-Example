@@ -4,11 +4,9 @@ package com.raslan.customer;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -140,6 +138,10 @@ public class Customer implements UserDetails {
     @Override
     public String getUsername() {
         return email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override
