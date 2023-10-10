@@ -3,6 +3,7 @@ package com.raslan.customer;
 
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -127,7 +128,8 @@ public class Customer implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        return AuthorityUtils.createAuthorityList("ROLE_USER") ;
+       // return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
     @Override
