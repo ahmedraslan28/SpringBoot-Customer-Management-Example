@@ -3,7 +3,7 @@ package com.raslan.journey;
 
 import com.github.javafaker.Faker;
 import com.raslan.customer.Customer;
-import com.raslan.customer.CustomerRegistrationRequest;
+import com.raslan.customer.CustomerRegistrationRequestDTO;
 import com.raslan.customer.CustomerUpdateRequest;
 import com.raslan.customer.Gender;
 import org.junit.jupiter.api.Test;
@@ -39,14 +39,14 @@ public class CustomerIntegrationTest {
         int age = random.nextInt(18, 90);
         Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
 
-        CustomerRegistrationRequest request = new CustomerRegistrationRequest(name, email, "password", age, gender);
+        CustomerRegistrationRequestDTO request = new CustomerRegistrationRequestDTO(name, email, "password", age, gender);
 
         // post a new customer
         client.post()
                 .uri(CUSTOMER_URL)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(Mono.just(request), CustomerRegistrationRequest.class)
+                .body(Mono.just(request), CustomerRegistrationRequestDTO.class)
                 .exchange()
                 .expectStatus()
                 .isOk();
@@ -79,14 +79,14 @@ public class CustomerIntegrationTest {
         int age = random.nextInt(18, 90);
         Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
 
-        CustomerRegistrationRequest request = new CustomerRegistrationRequest(name, email, "password", age, gender);
+        CustomerRegistrationRequestDTO request = new CustomerRegistrationRequestDTO(name, email, "password", age, gender);
 
         // post a new customer
         client.post()
                 .uri(CUSTOMER_URL)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(Mono.just(request), CustomerRegistrationRequest.class)
+                .body(Mono.just(request), CustomerRegistrationRequestDTO.class)
                 .exchange()
                 .expectStatus()
                 .isOk();
@@ -133,14 +133,14 @@ public class CustomerIntegrationTest {
         String email = name + "@reso.com";
         int age = random.nextInt(18, 90);
         Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
-        CustomerRegistrationRequest request = new CustomerRegistrationRequest(name, email, "password", age, gender);
+        CustomerRegistrationRequestDTO request = new CustomerRegistrationRequestDTO(name, email, "password", age, gender);
 
         // post a new customer
         client.post()
                 .uri(CUSTOMER_URL)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(Mono.just(request), CustomerRegistrationRequest.class)
+                .body(Mono.just(request), CustomerRegistrationRequestDTO.class)
                 .exchange()
                 .expectStatus()
                 .isOk();

@@ -29,7 +29,7 @@ public class CustomerController {
     }
 
     @PostMapping
-    public ResponseEntity<?> CreateCustomer(@RequestBody CustomerRegistrationRequest customer) {
+    public ResponseEntity<?> CreateCustomer(@RequestBody CustomerRegistrationRequestDTO customer) {
         customerService.createCustomer(customer);
         String token = jwtUtil.issueToken(customer.email(), "ROLE_USER");
         String body = """

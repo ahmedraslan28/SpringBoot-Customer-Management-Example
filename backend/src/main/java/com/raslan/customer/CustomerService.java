@@ -29,7 +29,7 @@ public class CustomerService {
                 );
     }
 
-    public void createCustomer(CustomerRegistrationRequest request) {
+    public void createCustomer(CustomerRegistrationRequestDTO request) {
         if (customerDAO.existCustomerWithEmail(request.email())) {
             throw new DuplicatedRowException("the email already exists!!");
         }

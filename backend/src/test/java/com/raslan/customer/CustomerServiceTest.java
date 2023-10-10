@@ -70,7 +70,7 @@ class CustomerServiceTest {
 
     @Test
     void createCustomer() {
-        CustomerRegistrationRequest request = new CustomerRegistrationRequest(
+        CustomerRegistrationRequestDTO request = new CustomerRegistrationRequestDTO(
                 "ahmed raslan",
                 "test@test.com",
                 "password", 22,
@@ -98,7 +98,7 @@ class CustomerServiceTest {
 
     @Test
     void throwExceptionWhenCreateCustomerWithDuplicateEmail() {
-        CustomerRegistrationRequest request = new CustomerRegistrationRequest("ahmed raslan",
+        CustomerRegistrationRequestDTO request = new CustomerRegistrationRequestDTO("ahmed raslan",
                 "test@test.com",
                 "password", 22, Gender.MALE);
         when(customerDAO.existCustomerWithEmail(request.email())).thenReturn(true);
