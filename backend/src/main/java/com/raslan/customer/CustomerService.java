@@ -1,5 +1,7 @@
 package com.raslan.customer;
 
+import com.raslan.dto.CustomerRegistrationRequestDTO;
+import com.raslan.dto.CustomerUpdateRequestDTO;
 import com.raslan.exception.DuplicatedRowException;
 import com.raslan.exception.RequestValidationException;
 import com.raslan.exception.ResourceNotFoundException;
@@ -54,7 +56,7 @@ public class CustomerService {
         customerDAO.deleteCustomer(id);
     }
 
-    public Customer updateCustomer(Integer id, CustomerUpdateRequest customerToUpdate) {
+    public Customer updateCustomer(Integer id, CustomerUpdateRequestDTO customerToUpdate) {
         Customer customer = getCustomer(id);
 
         boolean isChanged = false;

@@ -1,4 +1,6 @@
-package com.raslan.customer;
+package com.raslan.dto;
+
+import com.raslan.customer.Gender;
 
 import java.util.List;
 

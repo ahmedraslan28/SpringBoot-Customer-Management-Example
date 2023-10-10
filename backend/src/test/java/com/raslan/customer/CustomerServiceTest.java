@@ -1,5 +1,7 @@
 package com.raslan.customer;
 
+import com.raslan.dto.CustomerRegistrationRequestDTO;
+import com.raslan.dto.CustomerUpdateRequestDTO;
 import com.raslan.exception.DuplicatedRowException;
 import com.raslan.exception.RequestValidationException;
 import com.raslan.exception.ResourceNotFoundException;
@@ -139,7 +141,7 @@ class CustomerServiceTest {
 
         when(customerDAO.getCustomer(id)).thenReturn(Optional.of(customer));
 
-        CustomerUpdateRequest updated = new CustomerUpdateRequest(
+        CustomerUpdateRequestDTO updated = new CustomerUpdateRequestDTO(
                 "ahmed raslan updated",
                 "youssef@gmail.com",
                 23
@@ -173,7 +175,7 @@ class CustomerServiceTest {
 
         when(customerDAO.getCustomer(id)).thenReturn(Optional.of(customer));
 
-        CustomerUpdateRequest updated = new CustomerUpdateRequest("new name", null, null);
+        CustomerUpdateRequestDTO updated = new CustomerUpdateRequestDTO("new name", null, null);
 
         //when
         underTest.updateCustomer(id, updated);
@@ -202,7 +204,7 @@ class CustomerServiceTest {
 
         when(customerDAO.getCustomer(id)).thenReturn(Optional.of(customer));
 
-        CustomerUpdateRequest updated = new CustomerUpdateRequest(null, null, 13);
+        CustomerUpdateRequestDTO updated = new CustomerUpdateRequestDTO(null, null, 13);
 
         //when
         underTest.updateCustomer(id, updated);
@@ -232,7 +234,7 @@ class CustomerServiceTest {
 
         String newEmail = "newEmail@test.com";
 
-        CustomerUpdateRequest updated = new CustomerUpdateRequest(null, newEmail, null);
+        CustomerUpdateRequestDTO updated = new CustomerUpdateRequestDTO(null, newEmail, null);
 
         when(customerDAO.existCustomerWithEmail(newEmail)).thenReturn(false);
 
@@ -262,7 +264,7 @@ class CustomerServiceTest {
 
         String newEmail = "newEmail@test.com";
 
-        CustomerUpdateRequest updated = new CustomerUpdateRequest(null, newEmail, null);
+        CustomerUpdateRequestDTO updated = new CustomerUpdateRequestDTO(null, newEmail, null);
 
         when(customerDAO.existCustomerWithEmail(newEmail)).thenReturn(true);
 
@@ -283,7 +285,7 @@ class CustomerServiceTest {
 
         when(customerDAO.getCustomer(id)).thenReturn(Optional.of(customer));
 
-        CustomerUpdateRequest updated = new CustomerUpdateRequest(customer.getName(), customer.getEmail(), customer.getAge());
+        CustomerUpdateRequestDTO updated = new CustomerUpdateRequestDTO(customer.getName(), customer.getEmail(), customer.getAge());
 
         //when
         assertThatThrownBy(() -> underTest.updateCustomer(id, updated))

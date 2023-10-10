@@ -1,5 +1,7 @@
 package com.raslan.customer;
 
+import com.raslan.dto.CustomerRegistrationRequestDTO;
+import com.raslan.dto.CustomerUpdateRequestDTO;
 import com.raslan.jwt.JWTUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -45,7 +47,7 @@ public class CustomerController {
 
     @PutMapping("/{id}")
     public Customer updateCustomer(@PathVariable("id") Integer id,
-                                   @RequestBody CustomerUpdateRequest customerToUpdate) {
+                                   @RequestBody CustomerUpdateRequestDTO customerToUpdate) {
 
         return customerService.updateCustomer(id, customerToUpdate) ;
     }

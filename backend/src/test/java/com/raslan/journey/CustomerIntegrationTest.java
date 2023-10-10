@@ -3,8 +3,8 @@ package com.raslan.journey;
 
 import com.github.javafaker.Faker;
 import com.raslan.customer.Customer;
-import com.raslan.customer.CustomerRegistrationRequestDTO;
-import com.raslan.customer.CustomerUpdateRequest;
+import com.raslan.dto.CustomerRegistrationRequestDTO;
+import com.raslan.dto.CustomerUpdateRequestDTO;
 import com.raslan.customer.Gender;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -165,13 +165,13 @@ public class CustomerIntegrationTest {
 
         // update the customer
         String newName = "new name" ;
-        CustomerUpdateRequest updated = new CustomerUpdateRequest(newName, null, null);
+        CustomerUpdateRequestDTO updated = new CustomerUpdateRequestDTO(newName, null, null);
 
         client.put()
                 .uri(CUSTOMER_URL + "/{id}", id)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(Mono.just(updated), CustomerUpdateRequest.class)
+                .body(Mono.just(updated), CustomerUpdateRequestDTO.class)
                 .exchange()
                 .expectStatus()
                 .isOk();

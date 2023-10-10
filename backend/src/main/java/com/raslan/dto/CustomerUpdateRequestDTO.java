@@ -1,6 +1,6 @@
-package com.raslan.customer;
+package com.raslan.dto;
 
-public record CustomerUpdateRequest(
+public record CustomerUpdateRequestDTO(
         String name,
         String email,
         Integer age
