@@ -4,15 +4,14 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.MacAlgorithm;
-import io.jsonwebtoken.security.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import java.time.Instant;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
@@ -35,6 +34,9 @@ public class JWTUtil {
         return issueToken(subject, Map.of("scopes", scopes));
     }
 
+    public String issueToken(String subject, List<String> scopes){
+        return issueToken(subject, Map.of("scopes", scopes));
+    }
 
     public String issueToken(String subject, Map<String, Object> claims){
         return Jwts

@@ -17,9 +17,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityFilterChainConfig {
     private final JWTAuthenticationFilter jwtAuthenticationFilter;
-    private final AuthenticationProvider authenticationProvider ;
+    private final AuthenticationProvider authenticationProvider;
 
-    private final AuthenticationEntryPoint authenticationEntryPoint ;
+    private final AuthenticationEntryPoint authenticationEntryPoint;
 
     public SecurityFilterChainConfig(JWTAuthenticationFilter jwtAuthenticationFilter,
                                      AuthenticationProvider authenticationProvider, AuthenticationEntryPoint authenticationEntryPoint) {
@@ -35,7 +35,11 @@ public class SecurityFilterChainConfig {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(
                         auth -> auth
-                                .requestMatchers(HttpMethod.POST, "/api/v1/customers").permitAll()
+                                .requestMatchers(
+                                        HttpMethod.POST,
+                                        "/api/v1/customers",
+                                        "/api/v1/auth/login"
+                                ).permitAll()
                                 .anyRequest()
                                 .authenticated()
                 )
