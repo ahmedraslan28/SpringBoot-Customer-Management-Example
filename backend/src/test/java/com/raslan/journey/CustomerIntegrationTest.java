@@ -51,16 +51,16 @@ public class CustomerIntegrationTest {
 
         // post a new customer and get token
         String jwtToken = client.post()
-                        .uri(CUSTOMER_URL)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .body(Mono.just(request), CustomerRegistrationRequestDTO.class)
-                        .exchange()
-                        .expectStatus()
-                        .isOk()
-                        .expectBody(TokenDTO.class)
-                        .returnResult()
-                        .getResponseBody().token();
+                .uri(CUSTOMER_URL)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Mono.just(request), CustomerRegistrationRequestDTO.class)
+                .exchange()
+                .expectStatus()
+                .isOk()
+                .expectBody(TokenDTO.class)
+                .returnResult()
+                .getResponseBody().token();
 
         // make sure that the posted customer is present
         List<Customer> allCustomers = client.get()
@@ -92,20 +92,44 @@ public class CustomerIntegrationTest {
         int age = random.nextInt(18, 90);
         Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
 
-        CustomerRegistrationRequestDTO request = new CustomerRegistrationRequestDTO(name, email, "password", age, gender);
+        CustomerRegistrationRequestDTO request = new CustomerRegistrationRequestDTO(
+                name,
+                email,
+                "password",
+                age,
+                gender
+        );
+        CustomerRegistrationRequestDTO request2 = new CustomerRegistrationRequestDTO(
+                name,
+                email + ".eg",
+                "password",
+                age,
+                gender
+        );
 
-        // post a new customer
-        String jwtToken = client.post()
+        // create customer1
+        client.post()
                 .uri(CUSTOMER_URL)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(Mono.just(request), CustomerRegistrationRequestDTO.class)
                 .exchange()
                 .expectStatus()
+                .isOk();
+
+        // create customer2
+        String jwtToken = client.post()
+                .uri(CUSTOMER_URL)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Mono.just(request2), CustomerRegistrationRequestDTO.class)
+                .exchange()
+                .expectStatus()
                 .isOk()
                 .expectBody(TokenDTO.class)
                 .returnResult()
-                .getResponseBody().token();
+                .getResponseBody()
+                .token();
 
         // make sure that the posted customer is present and get his id
         List<Customer> allCustomers = client.get()
@@ -135,8 +159,7 @@ public class CustomerIntegrationTest {
                 .expectStatus()
                 .isOk();
 
-        // check if the customer is deleted
-
+        // using the token of the second customer to check if the first customer is successfully deleted
         client.get()
                 .uri(CUSTOMER_URL + "/{id}", id)
                 .accept(MediaType.APPLICATION_JSON)
@@ -187,7 +210,7 @@ public class CustomerIntegrationTest {
                 .orElseThrow();
 
         // update the customer
-        String newName = "new name" ;
+        String newName = "new name";
         CustomerUpdateRequestDTO updated = new CustomerUpdateRequestDTO(newName, null, null);
 
         client.put()
@@ -205,6 +228,7 @@ public class CustomerIntegrationTest {
         Customer updatedCustomer = client.get()
                 .uri(CUSTOMER_URL + "/{id}", id)
                 .accept(MediaType.APPLICATION_JSON)
+                .header(AUTHORIZATION, String.format("Bearer %s", jwtToken))
                 .exchange()
                 .expectStatus()
                 .isOk()
@@ -214,6 +238,6 @@ public class CustomerIntegrationTest {
 
         Customer expectedCustomer = new Customer(id, newName, age, email, "password", gender);
 
-        assertThat(expectedCustomer).isEqualTo(updatedCustomer) ;
+        assertThat(expectedCustomer).isEqualTo(updatedCustomer);
     }
 }
