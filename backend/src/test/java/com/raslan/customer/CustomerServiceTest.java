@@ -135,7 +135,7 @@ class CustomerServiceTest {
         assertThatThrownBy(() -> underTest
                 .deleteCustomer(id))
                 .isInstanceOf(ResourceNotFoundException.class)
-                .hasMessage("no customer with given id !!");
+                .hasMessage("no customer with given id");
 
         verify(customerDAO, never()).deleteCustomer(id);
 

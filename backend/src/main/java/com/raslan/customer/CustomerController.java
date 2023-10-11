@@ -1,9 +1,6 @@
 package com.raslan.customer;
 
-import com.raslan.dto.CustomerDTO;
-import com.raslan.dto.CustomerRegistrationRequestDTO;
-import com.raslan.dto.CustomerUpdateRequestDTO;
-import com.raslan.dto.TokenDTO;
+import com.raslan.dto.*;
 import com.raslan.jwt.JWTUtil;
 import com.raslan.mapper.CustomerMapper;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +15,7 @@ public class CustomerController {
     private final CustomerService customerService;
     private final JWTUtil jwtUtil;
 
-    private final CustomerMapper customerMapper ;
+    private final CustomerMapper customerMapper;
 
     public CustomerController(CustomerService customerService, JWTUtil jwtUtil, CustomerMapper customerMapper) {
         this.customerService = customerService;
@@ -29,32 +26,44 @@ public class CustomerController {
     @GetMapping
     public List<CustomerDTO> getCustomers() {
         List<Customer> customers = customerService.getAllCustomers();
-        return customerMapper.listOfCustomersToDto(customers) ;
+        return customerMapper.listOfCustomersToDto(customers);
     }
 
     @GetMapping("/{id}")
     public CustomerDTO getCustomer(@PathVariable("id") Integer id) {
-        Customer customer = customerService.getCustomer(id) ;
+        Customer customer = customerService.getCustomer(id);
         return customerMapper.customerToCustomerDto(customer);
     }
 
     @PostMapping
-    public ResponseEntity<?> CreateCustomer(@RequestBody CustomerRegistrationRequestDTO customer) {
-        customerService.createCustomer(customer);
-        String token = jwtUtil.issueToken(customer.email(), "ROLE_USER");
-        return ResponseEntity.ok(new TokenDTO(token));
+    public ResponseEntity<?> CreateCustomer(@RequestBody CustomerRegistrationRequestDTO request) {
+        Customer customer = customerService.createCustomer(request);
+        String token = jwtUtil.issueToken(request.email(), "ROLE_USER");
+        return ResponseEntity.ok().body(new CustomerTokenResponseDTO(
+                        token,
+                        customerMapper.customerToCustomerDto(customer)
+                )
+        );
     }
 
     @DeleteMapping("/{id}")
-    public void deleteCustomer(@PathVariable("id") Integer id) {
-        customerService.deleteCustomer(id);
+    public ResponseEntity<?> deleteCustomer(@PathVariable("id") Integer id) {
+        Customer customer = customerService.deleteCustomer(id);
+        return ResponseEntity.ok().body(new CustomerMessageResponseDTO(
+                        "deleted successfully",
+                        customerMapper.customerToCustomerDto(customer)
+                )
+        );
     }
 
     @PutMapping("/{id}")
-    public CustomerDTO updateCustomer(@PathVariable("id") Integer id,
-                                   @RequestBody CustomerUpdateRequestDTO customerToUpdate) {
-        return customerMapper.customerToCustomerDto(
-                customerService.updateCustomer(id, customerToUpdate)
+    public ResponseEntity<?> updateCustomer(@PathVariable("id") Integer id,
+                                            @RequestBody CustomerUpdateRequestDTO customerToUpdate) {
+        Customer customer = customerService.updateCustomer(id, customerToUpdate);
+        return ResponseEntity.ok().body(new CustomerMessageResponseDTO(
+                        "updated successfully",
+                        customerMapper.customerToCustomerDto(customer)
+                )
         );
     }
 

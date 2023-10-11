@@ -37,7 +37,7 @@ public class CustomerService {
                 );
     }
 
-    public void createCustomer(CustomerRegistrationRequestDTO request) {
+    public Customer createCustomer(CustomerRegistrationRequestDTO request) {
         if (customerDAO.existCustomerWithEmail(request.email())) {
             throw new DuplicatedRowException("the email already exists!!");
         }
@@ -45,13 +45,15 @@ public class CustomerService {
         Customer customer = customerRequestsMapper.registrationRequestrequestToCustomer(passwordEncoder, request);
 
         customerDAO.createCustomer(customer);
+
+        return customer ;
     }
 
-    public void deleteCustomer(Integer id) {
+    public Customer deleteCustomer(Integer id) {
         if (!customerDAO.existCustomerWithId(id)) {
-            throw new ResourceNotFoundException("no customer with given id !!");
+            throw new ResourceNotFoundException("no customer with given id");
         }
-        customerDAO.deleteCustomer(id);
+        return customerDAO.deleteCustomer(id);
     }
 
     public Customer updateCustomer(Integer id, CustomerUpdateRequestDTO customerToUpdate) {

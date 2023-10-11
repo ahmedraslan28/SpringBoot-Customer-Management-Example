@@ -43,11 +43,12 @@ public class CustomerJDBCDataAccessService implements CustomerDAO {
     }
 
     @Override
-    public void deleteCustomer(Integer id) {
+    public Customer deleteCustomer(Integer id) {
         var sql = """
                     delete from customer where id = ?
                 """;
         jdbcTemplate.update(sql, id);
+        return null;
     }
 
     @Override

@@ -10,7 +10,7 @@ public interface CustomerDAO {
 
     void createCustomer(Customer customer) ;
 
-    void deleteCustomer(Integer id) ;
+    Customer deleteCustomer(Integer id) ;
 
     void updateCustomer(Customer customer) ;
 
