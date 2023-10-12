@@ -6,11 +6,9 @@ WORKDIR /app
 
 ENV REACT_APP_API_BASE_URL=$REACT_APP_API_BASE_URL
 
-COPY package*.json .
+COPY . .
 
 RUN npm install --silent
-
-COPY . .
 
 EXPOSE 3000
 
