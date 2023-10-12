@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { getCustomers } from "./services/client";
 import CardWithImage from "./components/Card";
 import { CreateCustomerDrawer } from "./components/Drawer";
+import {errorNotification} from "./services/Notification";
 const App = () => {
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -21,7 +22,11 @@ const App = () => {
         setCustomers(res.data);
       })
       .catch((err) => {
-        setError("Network Error Please Try Again");
+        setError("Ooops there is an error");
+        errorNotification(
+            `${err.code}`,
+            `${err.response.data.message}`
+        );
       })
       .finally(() => {
         setLoading(false);

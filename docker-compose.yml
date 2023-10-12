@@ -21,6 +21,7 @@ services:
 
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://dp:5432/customer
+#      Todo add JWT_SECRET_TOKEN
     ports:
       - "8081:8080"
     networks:
