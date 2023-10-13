@@ -53,8 +53,7 @@ export const AuthContextProvider = ({ children }) => {
   const isCustomerAuthenticated = () => {
     const token = localStorage.getItem("token");
 
-    if (!token) return false;
-
+    if (!token || !customer.email) return false;
     const decodeToken = jwtDecode(token);
     if (Date.now() > decodeToken.exp * 1000) {
       console.log("token expired");

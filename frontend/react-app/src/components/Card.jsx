@@ -27,8 +27,8 @@ export default function CardWithImage({
   return (
     <Center className="mohamed">
       <Box
-        maxW={"300px"}
-        minW={"300px"}
+        maxW={"320px"}
+        minW={"320px"}
         w={"full"}
         bg={useColorModeValue("white", "gray.800")}
         boxShadow={"2xl"}
