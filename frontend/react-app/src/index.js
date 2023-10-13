@@ -6,6 +6,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { createStandaloneToast } from "@chakra-ui/react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./components/Login";
+import Register from "./components/Register"
 import { AuthContextProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./shared/ProtectedRoute";
 
@@ -17,7 +18,11 @@ const router = createBrowserRouter([
     element: <Login />
   },
   {
-    path: "dashboard",
+    path: "/register",
+    element: <Register/>
+  },
+  {
+    path: "/dashboard",
     element: (
       <ProtectedRoute>
         <App />
