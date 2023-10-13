@@ -14,7 +14,7 @@ import { CreateCustomerDrawer } from "./components/Drawer";
 import {errorNotification} from "./services/Notification";
 import {useAuthContext} from "./contexts/AuthContext"
 const App = () => {
-  const { customer, login, setCustomer, isCustomerAuthenticated } =
+  const { customer, logout, setCustomer, isCustomerAuthenticated } =
     useAuthContext();
   console.log(customer)
   const [customers, setCustomers] = useState([]);
@@ -27,6 +27,10 @@ const App = () => {
       })
       .catch((err) => {
         setError("Ooops there is an error");
+        const statusCode = err.response.status ;
+        if(statusCode === 403 || statusCode === 401) {
+          logout();
+        }
         errorNotification(
             `${err.code}`,
             `${err.response.data.message}`
