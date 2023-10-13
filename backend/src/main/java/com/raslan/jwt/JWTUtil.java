@@ -4,7 +4,6 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.MacAlgorithm;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -19,8 +18,8 @@ import static java.time.temporal.ChronoUnit.DAYS;
 public class JWTUtil {
 
 
-    @Value("${JWT_SECRET_KEY}")
-    private String SECRET_KEY ;
+//    @Value("${JWT_SECRET_KEY}")
+    private static final  String  SECRET_KEY = "test1234__test1234__test1234__test1234__test1234__test1234" ;
 
     private static final MacAlgorithm algorithm = Jwts.SIG.HS256 ;
 
