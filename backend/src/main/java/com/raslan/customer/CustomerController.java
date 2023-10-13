@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/customers")
@@ -24,8 +25,14 @@ public class CustomerController {
     }
 
     @GetMapping
-    public List<CustomerDTO> getCustomers() {
+    public List<CustomerDTO> getCustomers(@RequestParam(required = false) String email) {
         List<Customer> customers = customerService.getAllCustomers();
+        if(email!=null && email.length()>0){
+            customers = customers
+            .stream()
+            .filter(c -> c.getEmail().equals(email))
+            .collect(Collectors.toList()) ;
+        }
         return customerMapper.listOfCustomersToDto(customers);
     }
 

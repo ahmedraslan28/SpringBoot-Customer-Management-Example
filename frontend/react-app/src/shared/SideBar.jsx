@@ -31,6 +31,8 @@ import {
   FiChevronDown,
 } from "react-icons/fi";
 
+import { useAuthContext } from "../contexts/AuthContext";
+
 const LinkItems = [
   { name: "Home", icon: FiHome },
   { name: "Trending", icon: FiTrendingUp },
@@ -104,6 +106,7 @@ const NavItem = ({ icon, children, ...rest }) => {
 };
 
 const MobileNav = ({ onOpen, ...rest }) => {
+  const { customer, logout, setCustomer } = useAuthContext();
   return (
     <Flex
       ml={{ base: 0, md: 60 }}
@@ -160,10 +163,12 @@ const MobileNav = ({ onOpen, ...rest }) => {
                   spacing="1px"
                   ml="2"
                 >
-                  <Text fontSize="sm">Justina Clark</Text>
-                  <Text fontSize="xs" color="gray.600">
-                    Admin
-                  </Text>
+                  <Text fontSize="sm">{customer?.name}</Text>
+                  {customer?.rules.map((role, id) => (
+                    <Text key={id} fontSize="xs" color="gray.600">
+                      {role}
+                    </Text>
+                  ))}
                 </VStack>
                 <Box display={{ base: "none", md: "flex" }}>
                   <FiChevronDown />
@@ -178,7 +183,11 @@ const MobileNav = ({ onOpen, ...rest }) => {
               <MenuItem>Settings</MenuItem>
               <MenuItem>Billing</MenuItem>
               <MenuDivider />
-              <MenuItem>Sign out</MenuItem>
+              <MenuItem
+                onClick={logout}
+              >
+                Sign out
+              </MenuItem>
             </MenuList>
           </Menu>
         </Flex>

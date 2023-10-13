@@ -7,6 +7,8 @@ import {
   errorNotification,
   successNotification,
 } from "../services/Notification";
+import { useAuthContext } from "../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const MyTextInput = ({ label, ...props }) => {
   const [field, meta] = useField(props);
@@ -37,6 +39,7 @@ export const CustomerRegistrationForm = ({ onClose, fetchCustomers }) => {
         initialValues={{
           name: "",
           email: "",
+          password: "",
           age: null,
           gender: "",
         }}
@@ -54,6 +57,9 @@ export const CustomerRegistrationForm = ({ onClose, fetchCustomers }) => {
           email: Yup.string()
             .email("Invalid email address")
             .required("Required"),
+          password: Yup.string()
+            .min(7, "password must be at least 7 characters long")
+            .max(20, "password must be at most 7 characters long"),
         })}
         onSubmit={(customer, { setSubmitting }) => {
           setSubmitting(true);
@@ -94,6 +100,13 @@ export const CustomerRegistrationForm = ({ onClose, fetchCustomers }) => {
                   name="email"
                   type="email"
                   placeholder="jane@formik.com"
+                />
+
+                <MyTextInput
+                  label="Password"
+                  name="password"
+                  type="password"
+                  placeholder="pick a secure password"
                 />
 
                 <MyTextInput
@@ -210,5 +223,67 @@ export const CustomerUpdateForm = ({
         }}
       </Formik>
     </>
+  );
+};
+
+export const CustomerLoginForm = () => {
+  const { customer, login, setCustomer, isCustomerAuthenticated } =
+    useAuthContext();
+  const navigate = useNavigate();
+  return (
+    <Formik
+      initialValues={{
+        username: "",
+        password: "",
+      }}
+      validationSchema={Yup.object({
+        username: Yup.string()
+          .email("Must be valid email")
+          .required("Email is required"),
+        password: Yup.string().required("Password is required"),
+      })}
+      onSubmit={(values, { setSubmitting }) => {
+        console.log(values);
+        setSubmitting(true);
+        login(values)
+          .then((res) => {
+            console.log(customer) ;
+            console.log(res.data.customer) ;
+            navigate("/dashboard");
+          })
+          .catch((err) => {
+            errorNotification(`${err.code}`, `${err.response.data.message}`);
+          })
+          .finally(() => setSubmitting(false));
+      }}
+    >
+      {({ isValid, isSubmitting }) => (
+        <Form>
+          <Stack mt={4} spacing={15}>
+            <MyTextInput
+              label={"Email"}
+              name={"username"}
+              type={"email"}
+              placeholder={"hello@amigoscode.com"}
+            />
+            <MyTextInput
+              label={"Password"}
+              name={"password"}
+              type={"password"}
+              placeholder={"Type your password"}
+            />
+
+            <Button
+              type={"submit"}
+              disabled={!isValid || isSubmitting}
+              colorScheme={"blue"}
+              variant={"solid"}
+            >
+              Sign in
+            </Button>
+          </Stack>
+        </Form>
+      )}
+    </Formik>
   );
 };

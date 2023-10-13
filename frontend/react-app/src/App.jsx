@@ -12,7 +12,11 @@ import { getCustomers } from "./services/client";
 import CardWithImage from "./components/Card";
 import { CreateCustomerDrawer } from "./components/Drawer";
 import {errorNotification} from "./services/Notification";
+import {useAuthContext} from "./contexts/AuthContext"
 const App = () => {
+  const { customer, login, setCustomer, isCustomerAuthenticated } =
+    useAuthContext();
+  console.log(customer)
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [err, setError] = useState("good");
