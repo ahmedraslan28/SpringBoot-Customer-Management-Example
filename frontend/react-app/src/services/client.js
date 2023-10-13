@@ -3,8 +3,8 @@ const { REACT_APP_API_BASE_URL } = process.env;
 
 const getAuthConfig = () => ({
   headers: {
-    Authorization: `Bearer ${localStorage.getItem("token")}`
-  }
+    Authorization: `Bearer ${localStorage.getItem("token")}`,
+  },
 });
 
 export const getCustomers = async () => {
@@ -33,8 +33,7 @@ export const saveCustomer = async (customer) => {
   try {
     return await axios.post(
       `${REACT_APP_API_BASE_URL}/api/v1/customers`,
-      customer,
-      getAuthConfig()
+      customer
     );
   } catch (error) {
     throw error;
@@ -68,7 +67,7 @@ export const login = async (usernameAndPassword) => {
   try {
     return await axios.post(
       `${REACT_APP_API_BASE_URL}/api/v1/auth/login`,
-      usernameAndPassword,
+      usernameAndPassword
     );
   } catch (error) {
     throw error;
