@@ -45,9 +45,9 @@ export const AuthContextProvider = ({ children }) => {
     }
   };
 
-  const logout = async () => {
+  const logout = () => {
     localStorage.removeItem("token");
-    setCustomer(null);
+    setCustomer(defaultCustomer);
   };
 
   const isCustomerAuthenticated = () => {
