@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import { Box, Button, FormLabel, Input, Select, Stack } from "@chakra-ui/react";
+import { Box, Button, FormLabel, Input, Select, Stack, Text, Link } from "@chakra-ui/react";
 import { Formik, Form, useField } from "formik";
 import { updateCustomer, saveCustomer } from "../services/client";
 import { FieldError } from "./Alerts";
@@ -32,7 +32,7 @@ const MySelect = ({ label, ...props }) => {
   );
 };
 
-export const CustomerRegistrationForm = ({ onClose, fetchCustomers }) => {
+export const CustomerRegistrationForm = ({ onClose, onSuccess }) => {
   return (
     <>
       <Formik
@@ -65,12 +65,12 @@ export const CustomerRegistrationForm = ({ onClose, fetchCustomers }) => {
           setSubmitting(true);
           saveCustomer(customer)
             .then((res) => {
-              onClose();
+              onClose && onClose();
               successNotification(
                 "Customer Saved",
                 `${customer.name} was successfully saved`
               );
-              fetchCustomers();
+              onSuccess(res.data.token);
             })
             .catch((err) => {
               console.log(err);
@@ -87,7 +87,7 @@ export const CustomerRegistrationForm = ({ onClose, fetchCustomers }) => {
         {({ isSubmitting, isValid }) => {
           return (
             <Form>
-              <Stack spacing={"20px"}>
+              <Stack spacing={"15px"}>
                 <MyTextInput
                   label="Name"
                   name="name"
@@ -247,8 +247,8 @@ export const CustomerLoginForm = () => {
         setSubmitting(true);
         login(values)
           .then((res) => {
-            console.log(customer) ;
-            console.log(res.data.customer) ;
+            console.log(customer);
+            console.log(res.data.customer);
             navigate("/dashboard");
           })
           .catch((err) => {
@@ -258,31 +258,39 @@ export const CustomerLoginForm = () => {
       }}
     >
       {({ isValid, isSubmitting }) => (
-        <Form>
-          <Stack mt={4} spacing={15}>
-            <MyTextInput
-              label={"Email"}
-              name={"username"}
-              type={"email"}
-              placeholder={"hello@amigoscode.com"}
-            />
-            <MyTextInput
-              label={"Password"}
-              name={"password"}
-              type={"password"}
-              placeholder={"Type your password"}
-            />
+        <>
+          <Form>
+            <Stack mt={4} spacing={15}>
+              <MyTextInput
+                label={"Email"}
+                name={"username"}
+                type={"email"}
+                placeholder={"hello@amigoscode.com"}
+              />
+              <MyTextInput
+                label={"Password"}
+                name={"password"}
+                type={"password"}
+                placeholder={"Type your password"}
+              />
 
-            <Button
-              type={"submit"}
-              disabled={!isValid || isSubmitting}
-              colorScheme={"blue"}
-              variant={"solid"}
-            >
-              Sign in
-            </Button>
+              <Button
+                type={"submit"}
+                disabled={!isValid || isSubmitting}
+                colorScheme={"blue"}
+                variant={"solid"}
+              >
+                Sign in
+              </Button>
+            </Stack>
+          </Form>
+          <Stack mt={4}>
+
+          <Text align={"center"}>
+            New user ? <Link href="/register" color={"blue.400"}>SignUp</Link>
+          </Text>
           </Stack>
-        </Form>
+        </>
       )}
     </Formik>
   );

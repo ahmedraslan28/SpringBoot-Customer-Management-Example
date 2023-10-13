@@ -29,7 +29,7 @@ export const CreateCustomerDrawer = ({ fetchCustomers }) => {
 
           <DrawerBody>
             <CustomerRegistrationForm
-              fetchCustomers={fetchCustomers}
+              onSuccess={fetchCustomers}
               onClose={onClose}
             />
           </DrawerBody>
