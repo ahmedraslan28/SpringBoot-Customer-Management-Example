@@ -14,13 +14,13 @@ const Login = () => {
   const { isCustomerAuthenticated } = useAuthContext();
   const navigate = useNavigate();
   useEffect(() => {
-    if (isCustomerAuthenticated()) navigate("dashboard");
+    if (isCustomerAuthenticated()) navigate("/dashboard");
   }, []);
   return (
     <Stack minH={"100vh"} direction={{ base: "column", md: "row" }}>
       <Flex p={8} flex={1} align={"center"} justify={"center"}>
         <Stack spacing={4} w={"full"} maxW={"md"}>
-          <Heading fontSize={"2xl"}>Sign in to your account</Heading>
+          <Heading fontSize={"2xl"}>Login to your account</Heading>
           <CustomerLoginForm />
         </Stack>
       </Flex>
