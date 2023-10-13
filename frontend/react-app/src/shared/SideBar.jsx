@@ -16,16 +16,16 @@ import {
   useDisclosure,
   Menu,
   MenuButton,
-  MenuDivider,
+  // MenuDivider,
   MenuItem,
   MenuList,
 } from "@chakra-ui/react";
 import {
   FiHome,
-  FiTrendingUp,
-  FiCompass,
-  FiStar,
-  FiSettings,
+  // FiTrendingUp,
+  // FiCompass,
+  // FiStar,
+  // FiSettings,
   FiMenu,
   FiBell,
   FiChevronDown,
@@ -35,10 +35,10 @@ import { useAuthContext } from "../contexts/AuthContext";
 
 const LinkItems = [
   { name: "Home", icon: FiHome },
-  { name: "Trending", icon: FiTrendingUp },
-  { name: "Explore", icon: FiCompass },
-  { name: "Favourites", icon: FiStar },
-  { name: "Settings", icon: FiSettings },
+  // { name: "Trending", icon: FiTrendingUp },
+  // { name: "Explore", icon: FiCompass },
+  // { name: "Favourites", icon: FiStar },
+  // { name: "Settings", icon: FiSettings },
 ];
 
 const SidebarContent = ({ onClose, ...rest }) => {
@@ -179,10 +179,10 @@ const MobileNav = ({ onOpen, ...rest }) => {
               bg={useColorModeValue("white", "gray.900")}
               borderColor={useColorModeValue("gray.200", "gray.700")}
             >
-              <MenuItem>Profile</MenuItem>
+              {/* <MenuItem>Profile</MenuItem>
               <MenuItem>Settings</MenuItem>
               <MenuItem>Billing</MenuItem>
-              <MenuDivider />
+              <MenuDivider /> */}
               <MenuItem
                 onClick={logout}
               >
