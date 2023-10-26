@@ -1,0 +1,78 @@
+<div>
+  <div class="field">
+    <label for="firstname">Name</label>
+    <input
+      id="firstname"
+      pInputText
+      placeholder="ahmed"
+      type="text"
+      class="w-full"
+      [(ngModel)]="customerRegistrationRequest.name"
+    />
+  </div>
+
+  <div class="field">
+    <label for="email">Email</label>
+    <input
+      id="email"
+      pInputText
+      placeholder="ahmed@test.com"
+      type="email"
+      class="w-full"
+      [(ngModel)]="customerRegistrationRequest.email"
+    />
+  </div>
+
+  <div class="field">
+    <label for="password">Password</label>
+    <input
+      id="password"
+      pInputText
+      placeholder="your password"
+      type="password"
+      class="w-full"
+      [(ngModel)]="customerRegistrationRequest.password"
+    />
+  </div>
+
+  <div class="field">
+    <label for="age">Age</label>
+    <input
+      id="age"
+      pInputText
+      placeholder="22"
+      type="text"
+      class="w-full"
+      [(ngModel)]="customerRegistrationRequest.age"
+    />
+  </div>
+
+  <div class="field">
+    <label for="gender">Gender</label>
+    <br />
+    <select
+      class="p-dropdown w-full"
+      style="padding: 0.75rem; border: 1px solid #ced4da"
+      [(ngModel)]="customerRegistrationRequest.gender"
+    >
+      <option value="Selec an option" >Selec an option</option>
+      <option value="MALE">MALE</option>
+      <option value="FEMALE">FEMALE</option>
+    </select>
+  </div>
+
+  <button
+  pButton
+  label="Submit"
+  class="w-full"
+  [disabled]="!isCustomerValid"
+  (click) = "onSubmit()"
+  ></button>
+  <button
+
+    pButton
+    label="Cancel"
+    class="w-full p-button-outlined p-button-danger mt-2"
+    (click)="cancel()"
+  ></button>
+</div>

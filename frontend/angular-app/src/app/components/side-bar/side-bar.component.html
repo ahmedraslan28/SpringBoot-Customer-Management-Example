@@ -1,0 +1,22 @@
+<p-sidebar
+  (onHide)="onHide()"
+  [(visible)]="sideBarVisible"
+  position="right"
+  [transitionOptions]="'300ms cubic-bezier(0, 0, 0.2, 1)'"
+  styleClass="p-sidebar-lg"
+>
+  <h2>{{operation}}</h2>
+  <app-create-customer-form
+    *ngIf="operation === 'CREATE'"
+    (onCancel)="onHide()"
+    (submit)="save($event)"
+  ></app-create-customer-form>
+
+  <app-update-customer-form
+    *ngIf="operation === 'UPDATE'"
+    (onCancel)="onHide()"
+    (submit)="save($event)"
+    [customerUpdateRequest] = 'customerToUpdateRequest'
+  ></app-update-customer-form>
+</p-sidebar>
+<p-toast position="bottom-center" key="bc"></p-toast>
