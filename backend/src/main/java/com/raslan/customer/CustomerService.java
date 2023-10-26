@@ -17,7 +17,8 @@ public class CustomerService {
     private final CustomerDAO customerDAO;
     private final PasswordEncoder passwordEncoder;
 
-    private final CustomerRequestsMapper customerRequestsMapper ;
+    private final CustomerRequestsMapper customerRequestsMapper;
+
     CustomerService(@Qualifier("jpa") CustomerDAO customerDAO,
                     PasswordEncoder passwordEncoder,
                     CustomerRequestsMapper customerRequestsMapper) {
@@ -29,6 +30,11 @@ public class CustomerService {
     public List<Customer> getAllCustomers() {
         return customerDAO.getCustomers();
     }
+
+    public List<Customer> getAllCustomers(int page) {
+        return customerDAO.getCustomers(page);
+    }
+
 
     public Customer getCustomer(Integer id) {
         return customerDAO.getCustomer(id)
@@ -46,7 +52,7 @@ public class CustomerService {
 
         customerDAO.createCustomer(customer);
 
-        return customer ;
+        return customer;
     }
 
     public Customer deleteCustomer(Integer id) {

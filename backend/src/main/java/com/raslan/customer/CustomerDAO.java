@@ -5,6 +5,7 @@ import java.util.Optional;
 
 public interface CustomerDAO {
     List<Customer> getCustomers() ;
+    List<Customer> getCustomers(Integer page) ;
 
     Optional<Customer> getCustomer(Integer customerId) ;
 

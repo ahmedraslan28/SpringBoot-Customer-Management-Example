@@ -25,6 +25,14 @@ public class CustomerJDBCDataAccessService implements CustomerDAO {
     }
 
     @Override
+    public List<Customer> getCustomers(Integer page) {
+        var sql = """
+                    select * from customer limit = ?
+                """;
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Customer.class), page);
+    }
+
+    @Override
     public Optional<Customer> getCustomer(Integer customerId) {
         var sql = """
                     select * from customer where id = ?

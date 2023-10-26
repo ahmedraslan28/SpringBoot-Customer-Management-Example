@@ -36,6 +36,7 @@ public class Main {
                     passwordEncoder.encode(UUID.randomUUID().toString()),
                     gender
             );
+            System.out.println(customer);
             customerRepository.save(customer);
         };
     }
