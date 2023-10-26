@@ -115,4 +115,13 @@ public class CustomerJDBCDataAccessService implements CustomerDAO {
                 """;
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Customer.class), email).stream().findFirst();
     }
+
+    @Override
+    public long countCustomers() {
+        String sql = """
+                    select count(id) from customer 
+                """;
+        Integer count = jdbcTemplate.queryForObject(sql, Integer.class);
+        return count != null ? count : 0 ;
+    }
 }

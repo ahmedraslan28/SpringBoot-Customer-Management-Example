@@ -87,4 +87,9 @@ public class CustomerService {
         customerDAO.updateCustomer(customer);
         return customer;
     }
+
+
+    public Long countCustomers(){
+        return this.customerDAO.countCustomers();
+    }
 }

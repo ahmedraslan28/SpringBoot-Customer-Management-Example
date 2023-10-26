@@ -75,4 +75,10 @@ public class CustomerController {
                 new CustomerMessageResponseDTO("updated successfully", customerMapper.customerToCustomerDto(customer)));
     }
 
+    @GetMapping("/count")
+    public ResponseEntity<?> countCustomers(){
+        return ResponseEntity.ok().body(
+            new CountDTO(this.customerService.countCustomers())
+        ) ;
+    }
 }

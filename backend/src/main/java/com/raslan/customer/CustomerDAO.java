@@ -12,6 +12,8 @@ public interface CustomerDAO {
 
     void createCustomer(Customer customer) ;
 
+    long countCustomers() ;
+
     Customer deleteCustomer(Integer id) ;
 
     void updateCustomer(Customer customer) ;

@@ -65,4 +65,9 @@ public class CustomerJPADataAccessService implements CustomerDAO {
         return customerRepository.findByEmail(email);
     }
 
+    @Override
+    public long countCustomers() {
+        return this.customerRepository.count();
+    }
+
 }
