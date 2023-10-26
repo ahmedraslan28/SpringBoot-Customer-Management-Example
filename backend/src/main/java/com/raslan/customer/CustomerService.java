@@ -31,8 +31,8 @@ public class CustomerService {
         return customerDAO.getCustomers();
     }
 
-    public List<Customer> getAllCustomers(int page) {
-        return customerDAO.getCustomers(page);
+    public List<Customer> getAllCustomers(int offset, int limit) {
+        return customerDAO.getCustomers(offset, limit);
     }
 
 

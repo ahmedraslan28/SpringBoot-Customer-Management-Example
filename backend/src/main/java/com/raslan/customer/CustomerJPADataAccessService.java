@@ -1,6 +1,7 @@
 package com.raslan.customer;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
@@ -12,7 +13,6 @@ public class CustomerJPADataAccessService implements CustomerDAO {
 
     private final CustomerRepository customerRepository;
 
-
     public CustomerJPADataAccessService(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
     }
@@ -23,8 +23,10 @@ public class CustomerJPADataAccessService implements CustomerDAO {
     }
 
     @Override
-    public List<Customer> getCustomers(Integer page) {
-        return customerRepository.findAll(Pageable.ofSize(page)).getContent();
+    public List<Customer> getCustomers(Integer offset, Integer limit) {
+        Pageable pageable = PageRequest.of(offset, limit);
+        Page<Customer> customerPage = customerRepository.findAll(pageable);
+        return customerPage.getContent();
     }
 
     @Override
@@ -62,6 +64,5 @@ public class CustomerJPADataAccessService implements CustomerDAO {
     public Optional<Customer> getUserByEmail(String email) {
         return customerRepository.findByEmail(email);
     }
-
 
 }

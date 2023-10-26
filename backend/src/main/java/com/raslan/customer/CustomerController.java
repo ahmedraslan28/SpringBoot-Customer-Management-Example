@@ -26,12 +26,16 @@ public class CustomerController {
 
     @GetMapping
     public List<CustomerDTO> getCustomers(@RequestParam(required = false) String email,
-                                          @RequestParam(required = false) Integer page) {
-        List<Customer> customers =
-                (page != null && page > 0) ?
-                        customerService.getAllCustomers(page) :
-                        customerService.getAllCustomers();
+            @RequestParam(required = false) Integer limit,
+            @RequestParam(required = false) Integer offset) {
 
+        List<Customer> customers = List.of();
+
+        if (limit != null && offset == null) offset = 0;
+
+        customers = (limit != null)
+                ? customerService.getAllCustomers(offset, limit)
+                : customerService.getAllCustomers();
 
         if (email != null && email.length() > 0) {
             customers = customerService.getAllCustomers()
@@ -52,20 +56,23 @@ public class CustomerController {
     public ResponseEntity<?> CreateCustomer(@RequestBody CustomerRegistrationRequestDTO request) {
         Customer customer = customerService.createCustomer(request);
         String token = jwtUtil.issueToken(request.email(), "ROLE_USER");
-        return ResponseEntity.ok().body(new CustomerTokenResponseDTO(token, customerMapper.customerToCustomerDto(customer)));
+        return ResponseEntity.ok()
+                .body(new CustomerTokenResponseDTO(token, customerMapper.customerToCustomerDto(customer)));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteCustomer(@PathVariable("id") Integer id) {
         Customer customer = customerService.deleteCustomer(id);
-        return ResponseEntity.ok().body(new CustomerMessageResponseDTO("deleted successfully", customerMapper.customerToCustomerDto(customer)));
+        return ResponseEntity.ok().body(
+                new CustomerMessageResponseDTO("deleted successfully", customerMapper.customerToCustomerDto(customer)));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateCustomer(@PathVariable("id") Integer id, @RequestBody CustomerUpdateRequestDTO customerToUpdate) {
+    public ResponseEntity<?> updateCustomer(@PathVariable("id") Integer id,
+            @RequestBody CustomerUpdateRequestDTO customerToUpdate) {
         Customer customer = customerService.updateCustomer(id, customerToUpdate);
-        return ResponseEntity.ok().body(new CustomerMessageResponseDTO("updated successfully", customerMapper.customerToCustomerDto(customer)));
+        return ResponseEntity.ok().body(
+                new CustomerMessageResponseDTO("updated successfully", customerMapper.customerToCustomerDto(customer)));
     }
-
 
 }
