@@ -29,7 +29,7 @@ public class CustomerController {
             @RequestParam(required = false) Integer limit,
             @RequestParam(required = false) Integer offset) {
 
-        List<Customer> customers = List.of();
+        List<Customer> customers = List.of() ;
 
         if (limit != null && offset == null) offset = 0;
 

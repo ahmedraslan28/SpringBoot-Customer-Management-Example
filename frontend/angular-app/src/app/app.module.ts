@@ -27,6 +27,10 @@ import { CustomerCardComponent } from './components/customer-card/customer-card.
 import { UpdateCustomerFormComponent } from './components/forms/update-customer-form/update-customer-form/update-customer-form.component';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { RegisterComponent } from './components/register/register.component';
+import { PaginatorComponent } from './components/paginator/paginator.component';
+import { PaginatorModule } from 'primeng/paginator';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { ProgressSpinnerComponent } from './components/progress-spinner/progress-spinner.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -40,6 +44,8 @@ import { RegisterComponent } from './components/register/register.component';
     CustomerCardComponent,
     UpdateCustomerFormComponent,
     RegisterComponent,
+    PaginatorComponent,
+    ProgressSpinnerComponent,
 
   ],
   imports: [
@@ -59,6 +65,8 @@ import { RegisterComponent } from './components/register/register.component';
     CardModule,
     BadgeModule,
     ConfirmDialogModule,
+    PaginatorModule,
+    ProgressSpinnerModule,
   ],
   providers: [
     {

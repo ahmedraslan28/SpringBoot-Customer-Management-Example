@@ -26,6 +26,7 @@ public class CustomerJPADataAccessService implements CustomerDAO {
     public List<Customer> getCustomers(Integer offset, Integer limit) {
         Pageable pageable = PageRequest.of(offset, limit);
         Page<Customer> customerPage = customerRepository.findAll(pageable);
+        System.out.println("this customer page  " + customerPage);
         return customerPage.getContent();
     }
 

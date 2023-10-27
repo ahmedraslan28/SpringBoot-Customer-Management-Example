@@ -12,9 +12,15 @@ export class HomeComponent implements OnInit {
 
   sideBarVisible: boolean = false;
 
-  customers: CustomerDTO[] = [];
+  customers: CustomerDTO[] | undefined = undefined;
 
   operation: 'CREATE' | 'UPDATE' = 'CREATE';
+
+  limit = 10;
+
+  offset = 0;
+
+  customersCount = 0;
 
   constructor(private customerService: CustomerService) {}
   ngOnInit(): void {
@@ -22,9 +28,15 @@ export class HomeComponent implements OnInit {
   }
 
   private findAllCustomers() {
-    this.customerService.getCustomers().subscribe({
+    this.customerService.getCustomers(this.offset, this.limit).subscribe({
       next: (res) => {
         this.customers = res;
+
+        this.customerService.countCustomers().subscribe({
+          next: (res : any) => {
+            this.customersCount = res.count;
+          },
+        });
       },
     });
   }
@@ -49,6 +61,13 @@ export class HomeComponent implements OnInit {
   onClick() {
     this.sideBarVisible = true;
     this.operation = 'CREATE';
-    this.customer = {} ;
+    this.customer = {};
+  }
+
+  handlePageChange(event: any) {
+    console.log(event);
+    this.offset = event.first;
+    this.limit = event.rows;
+    this.reloadCustomers();
   }
 }

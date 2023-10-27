@@ -19,7 +19,7 @@ public class CustomerService {
 
     private final CustomerRequestsMapper customerRequestsMapper;
 
-    CustomerService(@Qualifier("jpa") CustomerDAO customerDAO,
+    CustomerService(@Qualifier("jdbc") CustomerDAO customerDAO,
                     PasswordEncoder passwordEncoder,
                     CustomerRequestsMapper customerRequestsMapper) {
         this.customerDAO = customerDAO;

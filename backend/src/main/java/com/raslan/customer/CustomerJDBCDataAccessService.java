@@ -27,8 +27,8 @@ public class CustomerJDBCDataAccessService implements CustomerDAO {
     @Override
     public List<Customer> getCustomers(Integer offset, Integer limit) {
         var sql = """
-                    select * from customer limit = ? offset = ?
-                """;
+            SELECT * FROM customer LIMIT ? OFFSET ?
+          """;
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Customer.class), limit, offset);
     }
 

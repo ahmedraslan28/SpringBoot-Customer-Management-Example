@@ -8,7 +8,6 @@ import { CustomerUpdateRequest } from 'src/app/models/customer-update-request';
 import { environment } from 'src/environments/environment';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
-
 @Injectable({
   providedIn: 'root',
 })
@@ -17,12 +16,19 @@ export class CustomerService {
 
   private readonly customersUrl = `${environment.api.baseUrl}/${environment.api.customersUrl}`;
 
-  getCustomers(): Observable<CustomerDTO[]> {
-    return this.httpClient.get<CustomerDTO[]>(this.customersUrl);
+  getCustomers(offset?: number, limit?: number): Observable<CustomerDTO[]> {
+    if (!offset && !limit)
+      return this.httpClient.get<CustomerDTO[]>(this.customersUrl);
+
+    return this.httpClient.get<CustomerDTO[]>(
+      `${this.customersUrl}?limit=${limit}&&offset=${offset}`
+    );
   }
 
   getCustomerByEmail(email: string): Observable<CustomerDTO[]> {
-    return this.httpClient.get<CustomerDTO[]>(`${this.customersUrl}?email=${email}`);
+    return this.httpClient.get<CustomerDTO[]>(
+      `${this.customersUrl}?email=${email}`
+    );
   }
 
   createCustomer(
@@ -45,13 +51,19 @@ export class CustomerService {
     return this.httpClient.put<void>(`${this.customersUrl}/${id}`, customer);
   }
 
-  getCustomerFromToken() : Observable<CustomerDTO[]>{
+  getCustomerFromToken(): Observable<CustomerDTO[]> {
     const token = localStorage.getItem('token');
-    let email = '' ;
-    if(token){
+    let email = '';
+    if (token) {
       const jwtHelper = new JwtHelperService();
-      if (!jwtHelper.isTokenExpired(token))  email = jwtHelper.decodeToken(token).sub ;
+      if (!jwtHelper.isTokenExpired(token))
+        email = jwtHelper.decodeToken(token).sub;
     }
-    return this.getCustomerByEmail(email)
+    return this.getCustomerByEmail(email);
+  }
+
+
+  countCustomers(): Observable<number> {
+    return this.httpClient.get<number>(`${this.customersUrl}/count`);
   }
 }
