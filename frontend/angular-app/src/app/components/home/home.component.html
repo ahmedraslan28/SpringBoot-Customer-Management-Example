@@ -1,0 +1,63 @@
+<div class="flex align-items-stretch min-h-screen">
+  <div
+    class="flex flex-column align-items-stretch border-right-1 col-2 border-gray-200 text-center"
+  >
+    <app-menu-bar></app-menu-bar>
+  </div>
+  <div class="flex flex-column flex-grow-1">
+    <div>
+      <app-header-bar [loggedInUser]="loggedInUser"></app-header-bar>
+    </div>
+
+    <div class="main-container p-3">
+      <div *ngIf="errorMsg; then errorBlock else elseBlock"></div>
+      <ng-template #errorBlock>
+        <div class="w-8">
+          <p-messages  [(value)]="messages" [enableService]="false" [closable]="false"></p-messages>
+        </div>
+      </ng-template>
+      <ng-template #elseBlock>
+        <app-progress-spinner *ngIf="!customers"></app-progress-spinner>
+        <button
+          pButton
+          icon="pi pi-plus"
+          label="Create Customer"
+          type="button"
+          style="background-color: #319795; border-color: #319795"
+          (click)="onClick()"
+          *ngIf="customers"
+        ></button>
+
+        <div
+          class="flex justify-content-center align-items-center flex-wrap gap-5 mt-4"
+        >
+          <app-customer-card
+            *ngFor="let customer of customers; let index = index"
+            [customer]="customer"
+            [customerIndex]="index"
+            (updateEventChange)="setSideBar($event)"
+            [(operation)]="operation"
+            (updatePage)="reloadCustomers()"
+            (customerToUpdate)="updateCustomer($event)"
+            [loggedInUser]="loggedInUser"
+          ></app-customer-card>
+        </div>
+
+        <app-paginator
+          *ngIf="customers"
+          (pageChange)="handlePageChange($event)"
+          [totalRecords]="customersCount"
+        >
+        </app-paginator>
+      </ng-template>
+    </div>
+  </div>
+
+  <app-side-bar
+    [customerToUpdate]="customer"
+    (updatePage)="reloadCustomers()"
+    [operation]="operation"
+    [(sideBarVisible)]="sideBarVisible"
+  >
+  </app-side-bar>
+</div>

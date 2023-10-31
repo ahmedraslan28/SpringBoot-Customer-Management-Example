@@ -1,0 +1,30 @@
+server:
+  port: 8080
+  error:
+    include-message: always
+
+
+cors:
+  allowed-origins: "*"
+  allowed-methods: "*"
+  allowed-headers: "*"
+  exposed-headers: "*"
+
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  devtools:
+    restart:
+      log-condition-evaluation-delta: false
+  datasource:
+    url: jdbc:postgresql://localhost:5432/customer
+    username: ahmedraslan
+    password: ahmedraslan
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: true

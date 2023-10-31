@@ -1,0 +1,17 @@
+{
+  "AWSEBDockerrunVersion": 2,
+  "containerDefinitions": [
+    {
+      "name": "customer-management-react",
+      "image": "ahmedraslan28/customer-management-react:13.10.2023.21.17.59",
+      "essential": true,
+      "memory": 650,
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort": 3000
+        }
+      ]
+    }
+  ]
+}

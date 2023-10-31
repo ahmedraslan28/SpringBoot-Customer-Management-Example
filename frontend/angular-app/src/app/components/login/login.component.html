@@ -1,0 +1,63 @@
+<div class="flex h-screen">
+  <p-toast position="bottom-center" key="bc"></p-toast>
+  <div
+    class="col-12 lg:col-6 xl:col-6 flex flex-column justify-content-center p-8 "
+    autocomplete="off"
+  >
+    <h3 class="pb-2">Login to your account</h3>
+    <div class="field">
+      <label for="username">Email</label>
+      <input
+        [(ngModel)]="authenticationRequest.username"
+        id="email"
+        pInputText
+        placeholder="ahmed@test.com"
+        type="email"
+        class="w-full"
+      />
+    </div>
+    <div class="field">
+      <label for="password">Password</label>
+      <input
+        [(ngModel)]="authenticationRequest.password"
+        id="password"
+        pInputText
+        placeholder="your password"
+        type="password"
+        class="w-full"
+      />
+    </div>
+    <button
+      pButton
+      label="Sign in"
+      class="w-full"
+      style="background-color: #2c6cb0; border-color: #2c6cb0"
+      (click)="login()"
+    ></button>
+
+    <button
+      pButton
+      label="Don't have an account? Signup now."
+      class="w-full p-button-link text-left pl-0"
+      style="color: #2c6cb0"
+      (click)="register()"
+    ></button>
+
+  </div>
+
+  <div
+    class="col-12 lg:col-6 xl:col-6 flex flex-column justify-content-center align-items-center right-container"
+  >
+    <h1>
+      <a
+        href="http://customer-react-env.eba-yk5r2usj.me-south-1.elasticbeanstalk.com/"
+        target="_blank"
+        >Enrol Now</a
+      >
+    </h1>
+    <img
+      class="background p-6 pt-0"
+      src="https://user-images.githubusercontent.com/40702606/215539167-d7006790-b880-4929-83fb-c43fa74f429e.png"
+    />
+  </div>
+</div>

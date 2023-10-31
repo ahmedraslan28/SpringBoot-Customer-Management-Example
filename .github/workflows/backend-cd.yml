@@ -1,0 +1,106 @@
+name: CD - Deploy Backend
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - backend/**
+
+jobs:
+  deploy:
+    if: false
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15.4
+        ports:
+          - "5432:5432"
+        env:
+          POSTGRES_PASSWORD: ahmedraslan
+          POSTGRES_USER: ahmedraslan
+          POSTGRES_DB: customer
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    defaults:
+      run:
+        working-directory: ./backend
+    steps:
+      - name: clone the repo to the runner
+        uses: actions/checkout@v4
+      - name: download java with maven
+        uses: actions/setup-java@v3
+        with:
+          distribution: "temurin"
+          java-version: "17"
+          cache: "maven"
+      - name: Login To Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Set build number
+        # generate random number to use it as a tag when push docker image and
+        # as version when deploy to AWS elastic beanstalk
+        id: build-number
+
+        #        1 - echo "BUILD_NUMBER=$(date '+%d.%m.%Y.%H.%M.%S')" >> $GITHUB_OUTPUT:
+        #        This line is the actual command that will be executed as part of the step.
+        #        It uses the echo command to print a string containing the current date and time
+        #        in the format dd.mm.yyyy.hh.mm.ss, and then appends it to the $GITHUB_OUTPUT file.
+
+        #        2 - BUILD_NUMBER=$(date '+%d.%m.%Y.%H.%M.%S')":
+        #        This part uses command substitution to execute the date command with the specified format
+        #        '+%d.%m.%Y.%H.%M.%S'. The date command retrieves the current date and time,
+        #        and the format string specifies how it should be formatted.
+
+        #        3 - $GITHUB_OUTPUT:
+        #        This part appends the output of the echo command,
+        #        which is the formatted date and time string, to the $GITHUB_OUTPUT file.
+        #        The $GITHUB_OUTPUT is an environment variable provided by GitHub Actions
+        #        that represents the workflow command output. By appending to this file,
+        #        the build number will be stored and can be accessed by other steps or parts of the workflow.
+
+        run: echo "BUILD_NUMBER=$(date '+%d.%m.%Y.%H.%M.%S')" >> $GITHUB_OUTPUT
+
+      - name: Build package and push to docker hub with maven
+        #        -D docker.image.tag ${{steps.build-number.outputs.BUILD_NUMBER}}:
+        #        This part passes a Maven system property -D to set the value of docker.image.tag.
+        #        It retrieves the value from the build-number step output using the
+        #        ${{steps.build-number.outputs.BUILD_NUMBER}} syntax.
+#        -D JWT_SECRET_KEY=${{secrets.JWT_SECRET_KEY}}
+        run: mvn -ntp -B clean verify -D docker.image.tag=${{steps.build-number.outputs.BUILD_NUMBER}} jib:build
+
+      - name: Update Dockerrun.aws.json customer-management-api image tag with new build number
+        run: |
+          echo "Dockerrun.aws.json before updating tag"
+          cat Dockerrun.aws.json
+          sed -i -E 's_(ahmedraslan28/customer-management-api:)([^"]*)_\1'${{steps.build-number.outputs.BUILD_NUMBER}}'_' Dockerrun.aws.json
+          echo "Dockerrun.aws.json after updating tag"
+          cat Dockerrun.aws.json
+
+      - name: Deploy to Elastic Beanstalk
+        uses: einaregilsson/beanstalk-deploy@v21
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: ${{ secrets.EB_APPLICATION_NAME }}
+          environment_name: ${{ secrets.EB_ENVIRONMENT_NAME }}
+          version_label: ${{ steps.build-number.outputs.BUILD_NUMBER }}
+          version_description: ${{ github.SHA }}
+          region: ${{ secrets.EB_REGION }}
+          deployment_package: backend/Dockerrun.aws.json
+
+      - name: Commit and push Dockerrun.aws.json
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add Dockerrun.aws.json
+          git commit -m "Update Dockerrun.aws.json docker image with new tag ${{ steps.build-number.outputs.BUILD_NUMBER }}"
+          git push
