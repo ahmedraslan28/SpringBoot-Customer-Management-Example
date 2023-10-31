@@ -1,4 +1,5 @@
 import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Message } from 'primeng/api';
 import { CustomerDTO } from 'src/app/models/customer-dto';
 import { CustomerService } from 'src/app/services/customer/customer.service';
 
@@ -22,9 +23,22 @@ export class HomeComponent implements OnInit {
 
   customersCount = 0;
 
+  errorMsg = '';
+
+  messages: Message[] = [];
+
+  loggedInUser: CustomerDTO = {};
+
   constructor(private customerService: CustomerService) {}
   ngOnInit(): void {
     this.findAllCustomers();
+    this.getLoggedInUser();
+  }
+
+  getLoggedInUser() {
+    this.customerService.getCustomerFromToken().subscribe({
+      next: (res) => (this.loggedInUser = res[0]),
+    });
   }
 
   private findAllCustomers() {
@@ -33,10 +47,21 @@ export class HomeComponent implements OnInit {
         this.customers = res;
 
         this.customerService.countCustomers().subscribe({
-          next: (res : any) => {
+          next: (res: any) => {
             this.customersCount = res.count;
           },
         });
+      },
+
+      error: (err) => {
+        this.errorMsg = 'please try again later this will be fixed soon.';
+        this.messages = [
+          {
+            severity: 'error',
+            summary: 'Network Error',
+            detail: this.errorMsg,
+          },
+        ];
       },
     });
   }

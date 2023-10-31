@@ -6,6 +6,7 @@ import {
   ConfirmEventType,
 } from 'primeng/api';
 import { CustomerService } from 'src/app/services/customer/customer.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-customer-card',
@@ -17,7 +18,8 @@ export class CustomerCardComponent {
   constructor(
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private customerService: CustomerService
+    private customerService: CustomerService,
+    private router : Router,
   ) {}
 
   @Input()
@@ -34,6 +36,9 @@ export class CustomerCardComponent {
 
   @Output()
   operationChange = new EventEmitter<'CREATE' | 'UPDATE'>();
+
+  @Input()
+  loggedInUser: CustomerDTO = {};
 
   @Output()
   updatePage = new EventEmitter<void>();
@@ -66,7 +71,13 @@ export class CustomerCardComponent {
               summary: 'Confirmed',
               detail: `${this.customer.name} Successfully deleted`,
             });
-            this.updatePage.emit();
+            setTimeout(() => {
+              this.updatePage.emit();
+            }, 3000) ;
+            if(this.customer.id === this.loggedInUser.id){
+              localStorage.removeItem('token') ;
+              this.router.navigate(['login'])
+            }
           },
           error: (err) => {
             this.messageService.add({

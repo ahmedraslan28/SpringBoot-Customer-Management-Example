@@ -9,20 +9,8 @@ import { CustomerService } from 'src/app/services/customer/customer.service';
   templateUrl: './header-bar.component.html',
   styleUrls: ['./header-bar.component.scss'],
 })
-export class HeaderBarComponent implements OnInit {
-  constructor(
-    private customerService: CustomerService,
-    private router: Router
-  ) {}
-
-  ngOnInit(): void {
-    this.customerService.getCustomerFromToken().subscribe({
-      next: (res) => {
-        this.loggedInUser.email = res[0].email;
-        this.loggedInUser.rules = res[0].rules;
-      },
-    });
-  }
+export class HeaderBarComponent {
+  constructor(private router: Router) {}
 
   items: Array<MenuItem> = [
     { label: 'Profile', icon: 'pi pi-user' },
@@ -38,8 +26,8 @@ export class HeaderBarComponent implements OnInit {
   @Input()
   loggedInUser: CustomerDTO = {};
 
-  logout(){
-    localStorage.removeItem('token') ;
+  logout() {
+    localStorage.removeItem('token');
     this.router.navigate(['login']);
   }
 }

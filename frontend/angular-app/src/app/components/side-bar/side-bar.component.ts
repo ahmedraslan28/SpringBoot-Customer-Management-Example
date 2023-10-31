@@ -50,11 +50,10 @@ export class SideBarComponent implements OnChanges {
 
   onHide() {
     this.sideBarVisibleChange.emit(false);
-    // this.customerToUpdate.id = undefined ;
   }
 
   save(customer: CustomerRegistrationRequest | CustomerUpdateRequest) {
-    console.log("onSave", customer)
+    console.log('onSave', customer);
     if (this.customerToUpdate.id) {
       console.log('updated');
       this.customerService
@@ -78,6 +77,7 @@ export class SideBarComponent implements OnChanges {
             });
           },
         });
+      this.onHide();
       return;
     }
     console.log('created');
@@ -103,6 +103,6 @@ export class SideBarComponent implements OnChanges {
       },
     });
 
-    this.onHide() ;
+    this.onHide();
   }
 }
